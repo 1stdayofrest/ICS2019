@@ -17,10 +17,10 @@ static void restart() {
   /* Set the initial program counter. */
   cpu.pc = PC_START;
 }
-
+void reg_test(void);
 void init_isa(void) {
   /* Test the implementation of the `CPU_state' structure. */
-  void reg_test(void);
+
   reg_test();
 
   /* Setup physical memory address space. */
