@@ -30,7 +30,7 @@ include Makefile.git
 CC = gcc
 LD = gcc
 INCLUDES  = $(addprefix -I, $(INC_DIR))
-CFLAGS   += -O2 -MMD -Wall -Werror -ggdb3 $(INCLUDES) -D__ISA__=$(ISA) -fomit-frame-pointer
+CFLAGS   += -O0 -MMD -Wall -Werror -ggdb3 $(INCLUDES) -D__ISA__=$(ISA) -fomit-frame-pointer
 
 QEMU_DIFF_PATH = $(NEMU_HOME)/tools/qemu-diff
 QEMU_SO = $(QEMU_DIFF_PATH)/build/$(ISA)-qemu-so
@@ -68,7 +68,7 @@ NEMU_EXEC := $(BINARY) $(ARGS) $(IMG)
 $(BINARY): $(OBJS)
 	$(call git_commit, "compile")
 	@echo + LD $@
-	@$(LD) -O2 -rdynamic $(SO_LDLAGS) -o $@ $^ -lSDL2 -lreadline -ldl
+	@$(LD) -O0 -rdynamic $(SO_LDLAGS) -o $@ $^ -lSDL2 -lreadline -ldl
 
 run-env: $(BINARY) $(QEMU_SO)
 
