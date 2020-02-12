@@ -202,8 +202,8 @@ static bool make_token(char *e) {
           tokens[nr_token].str[1] = substr_start[1];
           tokens[nr_token++].str[2] = '\0';
           break;
-//      default:
-//        TODO();
+        default:
+          TODO();
         }
         //不用再尝试其他规则
         break;
@@ -231,15 +231,15 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  if (!judge_exp()){
+  if (!judge_exp()) {
     *success = false;
-  }
-  else{
-    for (int i = 0; i < nr_token; i ++) {
-      if ((tokens[i].type == MINUS) && (i == 0 || tokens[i - 1].type >= ADD )) {
+  } else {
+    for (int i = 0; i < nr_token; i++) {
+      if ((tokens[i].type == MINUS) && (i == 0 || tokens[i - 1].type >= ADD)) {
         tokens[i].type = NEG;
       }
-      if ((tokens[i].type == MULTIPLY) && (i == 0 || tokens[i - 1].type >= ADD )) {
+      if ((tokens[i].type == MULTIPLY) &&
+          (i == 0 || tokens[i - 1].type >= ADD)) {
         tokens[i].type = DEREF;
       }
     }
@@ -250,63 +250,67 @@ uint32_t expr(char *e, bool *success) {
 
 /*求出 [p，q]之间的表达式的值*/
 uint32_t eval(int p, int q) {
-//  printf("in the eval p = %d, q = %d\n", p, q);
-  if (p > q){
+  //  printf("in the eval p = %d, q = %d\n", p, q);
+  if (p > q) {
     return BAD_EXP;
-  }
-  else if (p == q){
-    //tokens[p]是一个值 可能是num 可能是 REG 可能是 HEX
+  } else if (p == q) {
+    // tokens[p]是一个值 可能是num 可能是 REG 可能是 HEX
     if (tokens[p].type == NUM) {
       return atoi(tokens[p].str);
     }
-      //eax, ecx, edx, ebx, esp, ebp, esi, edi;
+    // eax, ecx, edx, ebx, esp, ebp, esi, edi;
     else if (tokens[p].type == REG) {
-      if (strcmp(tokens[p].str, "$eax") == 0){
-        //printf("eax = %u\n", cpu.eax);
-        return cpu.eax;}
-      else if (strcmp(tokens[p].str, "$ebx") == 0)  return cpu.ebx;
-      else if (strcmp(tokens[p].str, "$ecx") == 0)  return cpu.ecx;
-      else if (strcmp(tokens[p].str, "$edx") == 0)  return cpu.edx;
-      else if (strcmp(tokens[p].str, "$ebp") == 0)  return cpu.ebp;
-      else if (strcmp(tokens[p].str, "$esp") == 0)  return cpu.esp;
-      else if (strcmp(tokens[p].str, "$esi") == 0)  return cpu.esi;
-      else if (strcmp(tokens[p].str, "$edi") == 0)  return cpu.edi;
-      else if (strcmp(tokens[p].str, "$pc") == 0)  return cpu.pc;
-    }
-    else if (tokens[p].type == HEX) {
+      if (strcmp(tokens[p].str, "$eax") == 0) {
+        // printf("eax = %u\n", cpu.eax);
+        return cpu.eax;
+      } else if (strcmp(tokens[p].str, "$ebx") == 0)
+        return cpu.ebx;
+      else if (strcmp(tokens[p].str, "$ecx") == 0)
+        return cpu.ecx;
+      else if (strcmp(tokens[p].str, "$edx") == 0)
+        return cpu.edx;
+      else if (strcmp(tokens[p].str, "$ebp") == 0)
+        return cpu.ebp;
+      else if (strcmp(tokens[p].str, "$esp") == 0)
+        return cpu.esp;
+      else if (strcmp(tokens[p].str, "$esi") == 0)
+        return cpu.esi;
+      else if (strcmp(tokens[p].str, "$edi") == 0)
+        return cpu.edi;
+      else if (strcmp(tokens[p].str, "$pc") == 0)
+        return cpu.pc;
+    } else if (tokens[p].type == HEX) {
       int cnt, i, len, sum = 0;
       len = strlen(tokens[p].str);
       cnt = 1;
 
-      for (i = len-1; i >= 0; i--) {
+      for (i = len - 1; i >= 0; i--) {
         sum = sum + cnt * getnum(tokens[p].str[i]);
         cnt *= 16;
       }
       return sum;
     }
   }
-    //p < q [p,q]这一段被括号合法包围
-  else if (check_parentheses(p, q)){
+  // p < q [p,q]这一段被括号合法包围
+  else if (check_parentheses(p, q)) {
     //去掉括号
     return eval(p + 1, q - 1);
-  }
-  else {
+  } else {
     //没有被括号包围
     //找到dominant运算符，起决定性作用的运算符
     int op = find_dominant_operator(p, q);
-    //printf("op = %d\n", op);
-    //p=0,q=1  -1
-    //op = 0
+    // printf("op = %d\n", op);
+    // p=0,q=1  -1
+    // op = 0
     //(0,-1)
     //(1, 1)
     //计算运算符两边的表达式的值
     uint32_t val1;
-    if (tokens[op].type != DEREF && tokens[op].type != NEG)
-    {
+    if (tokens[op].type != DEREF && tokens[op].type != NEG) {
       val1 = eval(p, op - 1);
     }
     uint32_t val2 = eval(op + 1, q);
-    //printf("op = %d val1 = %u val2 = %u\n", op, val1, val2);
+    // printf("op = %d val1 = %u val2 = %u\n", op, val1, val2);
 
     switch (tokens[op].type) {
     case ADD:
@@ -368,7 +372,7 @@ bool check_parentheses(int p, int q) {
     if (tokens[i].type == RBRACKET) {
       bra--;
     }
-    if(bra == 0 && i < q) {
+    if (bra == 0 && i < q) {
       return false;
     }
   }
@@ -379,7 +383,7 @@ bool check_parentheses(int p, int q) {
 int find_dominant_operator(int p, int q) {
   int i = 0, j, cnt;
   int op = 0, opp, pos = -1;
-  for (i = p; i <= q; i++){
+  for (i = p; i <= q; i++) {
     if (tokens[i].type == NUM || tokens[i].type == REG || tokens[i].type == HEX)
       continue;
     else if (tokens[i].type == LBRACKET) {
@@ -389,12 +393,10 @@ int find_dominant_operator(int p, int q) {
           cnt++;
           i += cnt;
           break;
-        }
-        else
+        } else
           cnt++;
       }
-    }
-    else {
+    } else {
       opp = priority(i);
       if (opp >= op) {
         pos = i;
@@ -402,21 +404,25 @@ int find_dominant_operator(int p, int q) {
       }
     }
   }
-//  printf("op = %d, pos = %d\n",  op, pos);
+  //  printf("op = %d, pos = %d\n",  op, pos);
   return pos;
 }
 
 int priority(int i) {
-  if (tokens[i].type == ADD || tokens[i].type == MINUS) return 4;
-  else if (tokens[i].type == MULTIPLY || tokens[i].type == DIVIDE) return 3;
-  else if (tokens[i].type == OR) return 12;
-  else if (tokens[i].type == AND) return 11;
-  else if (tokens[i].type == NEQ || tokens[i].type == TK_EQ) return 7;
+  if (tokens[i].type == ADD || tokens[i].type == MINUS)
+    return 4;
+  else if (tokens[i].type == MULTIPLY || tokens[i].type == DIVIDE)
+    return 3;
+  else if (tokens[i].type == OR)
+    return 12;
+  else if (tokens[i].type == AND)
+    return 11;
+  else if (tokens[i].type == NEQ || tokens[i].type == TK_EQ)
+    return 7;
   return 0;
 }
 
-uint32_t getnum(char str)
-{
+uint32_t getnum(char str) {
   if (str >= '0' && str <= '9')
     return str - '0';
   else if (str >= 'a' && str <= 'f')
