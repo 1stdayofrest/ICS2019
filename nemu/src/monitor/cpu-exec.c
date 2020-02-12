@@ -61,7 +61,21 @@ void cpu_exec(uint64_t n) {
   log_clearbuf();
 
     /* TODO: check watchpoints here. */
-
+    /* 每当cpu_exec()执行完一条指令, 就对所有待监视的表达式进行求值
+    (你之前已经实现了表达式求值的功能了), 比较它们的值有没有发生变化,
+    若发生了变化, 程序就因触发了监视点而暂停下来,
+    你需要将nemu_state.state变量设置为NEMU_STOP来达到暂停的效果.
+    最后输出一句话提示用户触发了监视点, 并返回到ui_mainloop()循环中等待用户的命令
+    */
+    int *no = haschanged();
+    if (*no != -1) {
+      int i;
+      for (i = 0; *(no + i) != -1; i++) {
+        printf("NO.%d ", *(no + i));
+      }
+      printf("watchpoint has been changed\n");
+      nemu_state.state = NEMU_STOP;
+    }
 #endif
 
   g_nr_guest_instr ++;

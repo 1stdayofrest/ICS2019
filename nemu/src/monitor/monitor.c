@@ -30,7 +30,17 @@ static inline void welcome() {
   printf("Welcome to \33[1;41m\33[1;33m%s\33[0m-NEMU!\n", str(__ISA__));
   printf("For help, type \"help\"\n");
 }
-
+/*
+ * monitor通过调用load_img()函数
+ * (在nemu/src/monitor/monitor.c中定义)
+ * 将客户程序从镜像文件读入到客户计算机的内存.
+ * 而读入客户程序, 是为了将来让客户计算机的CPU来执行它,
+ * 因此我们需要一种方式让客户计算机的CPU知道客户程序的位置.
+ * 我们采取一种最简单的方式: 约定. 具体地,
+ * 我们让monitor直接把一个有意义的客户程序读入到
+ * 一个固定的内存位置IMAGE_START(也就是0x100000).
+ * 这个客户程序是运行NEMU的一个参数, 在运行NEMU的命令中指定,
+ * */
 static inline long load_img() {
   long size;
   if (img_file == NULL) {
@@ -41,7 +51,7 @@ static inline long load_img() {
     memcpy(guest_to_host(IMAGE_START), isa_default_img, size);
   } else {
     int ret;
-
+    //二进制方式打开文件
     FILE *fp = fopen(img_file, "rb");
     Assert(fp, "Can not open '%s'", img_file);
 
