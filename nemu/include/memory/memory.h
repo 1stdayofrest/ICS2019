@@ -7,7 +7,7 @@
 extern uint8_t pmem[];
 
 #define IMAGE_START 0x100000
-
+//将guest program当中实际的物理地址转换到vm上面 (void *)pmem + (unsigned)p 指针平移，段基址 + 相对位置
 /* convert the guest physical address in the guest program to host virtual address in NEMU */
 #define guest_to_host(p) ((void *)(pmem + (unsigned)p))
 /* convert the host virtual address in NEMU to guest physical address in the guest program */

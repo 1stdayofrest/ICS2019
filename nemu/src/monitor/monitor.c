@@ -1,5 +1,5 @@
-#include "nemu.h"
 #include "monitor/monitor.h"
+#include "nemu.h"
 #include <unistd.h>
 
 void init_log(const char *log_file);
@@ -18,7 +18,8 @@ static int is_batch_mode = false;
 static inline void welcome() {
 #ifdef DEBUG
   Log("Debug: \33[1;32m%s\33[0m", "ON");
-  Log("If debug mode is on, A log file will be generated to record every instruction NEMU executes. "
+  Log("If debug mode is on, A log file will be generated to record every "
+      "instruction NEMU executes. "
       "This may lead to a large log file. "
       "If it is not necessary, you can turn it off in include/common.h.");
 #else
@@ -38,25 +39,27 @@ static inline long load_img() {
     extern long isa_default_img_size;
     size = isa_default_img_size;
     memcpy(guest_to_host(IMAGE_START), isa_default_img, size);
-  }
-  else {
+  } else {
     int ret;
 
     FILE *fp = fopen(img_file, "rb");
     Assert(fp, "Can not open '%s'", img_file);
 
     Log("The image is %s", img_file);
-
+    //求得文件的大小
     fseek(fp, 0, SEEK_END);
     size = ftell(fp);
 
     fseek(fp, 0, SEEK_SET);
+    // 成功读取的次数 fread(读取的数据存放的内存的指针,
+    //              每次读取的字节数,读取次数,
+    //              要读取的文件的指针)
     ret = fread(guest_to_host(IMAGE_START), size, 1, fp);
     assert(ret == 1);
 
     fclose(fp);
 
-    // mainargs
+    //
     strcpy(guest_to_host(0), mainargs);
   }
   return size;
@@ -64,18 +67,28 @@ static inline long load_img() {
 
 static inline void parse_args(int argc, char *argv[]) {
   int o;
-  while ( (o = getopt(argc, argv, "-bl:d:a:")) != -1) {
+  while ((o = getopt(argc, argv, "-bl:d:a:")) != -1) {
     switch (o) {
-      case 'b': is_batch_mode = true; break;
-      case 'a': mainargs = optarg; break;
-      case 'l': log_file = optarg; break;
-      case 'd': diff_so_file = optarg; break;
-      case 1:
-                if (img_file != NULL) Log("too much argument '%s', ignored", optarg);
-                else img_file = optarg;
-                break;
-      default:
-                panic("Usage: %s [-b] [-l log_file] [img_file]", argv[0]);
+    case 'b':
+      is_batch_mode = true;
+      break;
+    case 'a':
+      mainargs = optarg;
+      break;
+    case 'l':
+      log_file = optarg;
+      break;
+    case 'd':
+      diff_so_file = optarg;
+      break;
+    case 1:
+      if (img_file != NULL)
+        Log("too much argument '%s', ignored", optarg);
+      else
+        img_file = optarg;
+      break;
+    default:
+      panic("Usage: %s [-b] [-l log_file] [img_file]", argv[0]);
     }
   }
 }
