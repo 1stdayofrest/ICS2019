@@ -41,7 +41,7 @@ static struct rule {
      */
 
     {" +", TK_NOTYPE},          // spaces
-    {"\\+", '+'},               // plus
+    {"\\+", ADD},               // plus
     {"==", TK_EQ},              // equal
     {"0[xX][0-9a-fA-F]+", HEX}, // hex number
     {"[0-9]+", NUM},            // numbers
