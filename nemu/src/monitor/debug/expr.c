@@ -383,7 +383,7 @@ bool check_parentheses(int p, int q) {
 int find_dominant_operator(int p, int q) {
   int i = 0, j, cnt;
   int op = 0, opp, pos = -1;
-  for (i = p; i <= q; i++) {
+  for (i = p; i <= q; i++) {//[p,q]
     if (tokens[i].type == NUM || tokens[i].type == REG || tokens[i].type == HEX)
       continue;
     else if (tokens[i].type == LBRACKET) {
@@ -397,7 +397,7 @@ int find_dominant_operator(int p, int q) {
           cnt++;
       }
     } else {
-      opp = priority(i);
+      opp = priority(i);//panduan opcode shifouhefa
       if (opp >= op) {
         pos = i;
         op = opp;

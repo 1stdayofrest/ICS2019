@@ -1257,60 +1257,6 @@ tools/qemu-diff/src/gdb-host.c.s:
 	$(MAKE) -f CMakeFiles/nemu.dir/build.make CMakeFiles/nemu.dir/tools/qemu-diff/src/gdb-host.c.s
 .PHONY : tools/qemu-diff/src/gdb-host.c.s
 
-tools/qemu-diff/src/isa/mips32/init.o: tools/qemu-diff/src/isa/mips32/init.c.o
-
-.PHONY : tools/qemu-diff/src/isa/mips32/init.o
-
-# target to build an object file
-tools/qemu-diff/src/isa/mips32/init.c.o:
-	$(MAKE) -f CMakeFiles/nemu.dir/build.make CMakeFiles/nemu.dir/tools/qemu-diff/src/isa/mips32/init.c.o
-.PHONY : tools/qemu-diff/src/isa/mips32/init.c.o
-
-tools/qemu-diff/src/isa/mips32/init.i: tools/qemu-diff/src/isa/mips32/init.c.i
-
-.PHONY : tools/qemu-diff/src/isa/mips32/init.i
-
-# target to preprocess a source file
-tools/qemu-diff/src/isa/mips32/init.c.i:
-	$(MAKE) -f CMakeFiles/nemu.dir/build.make CMakeFiles/nemu.dir/tools/qemu-diff/src/isa/mips32/init.c.i
-.PHONY : tools/qemu-diff/src/isa/mips32/init.c.i
-
-tools/qemu-diff/src/isa/mips32/init.s: tools/qemu-diff/src/isa/mips32/init.c.s
-
-.PHONY : tools/qemu-diff/src/isa/mips32/init.s
-
-# target to generate assembly for a file
-tools/qemu-diff/src/isa/mips32/init.c.s:
-	$(MAKE) -f CMakeFiles/nemu.dir/build.make CMakeFiles/nemu.dir/tools/qemu-diff/src/isa/mips32/init.c.s
-.PHONY : tools/qemu-diff/src/isa/mips32/init.c.s
-
-tools/qemu-diff/src/isa/riscv32/init.o: tools/qemu-diff/src/isa/riscv32/init.c.o
-
-.PHONY : tools/qemu-diff/src/isa/riscv32/init.o
-
-# target to build an object file
-tools/qemu-diff/src/isa/riscv32/init.c.o:
-	$(MAKE) -f CMakeFiles/nemu.dir/build.make CMakeFiles/nemu.dir/tools/qemu-diff/src/isa/riscv32/init.c.o
-.PHONY : tools/qemu-diff/src/isa/riscv32/init.c.o
-
-tools/qemu-diff/src/isa/riscv32/init.i: tools/qemu-diff/src/isa/riscv32/init.c.i
-
-.PHONY : tools/qemu-diff/src/isa/riscv32/init.i
-
-# target to preprocess a source file
-tools/qemu-diff/src/isa/riscv32/init.c.i:
-	$(MAKE) -f CMakeFiles/nemu.dir/build.make CMakeFiles/nemu.dir/tools/qemu-diff/src/isa/riscv32/init.c.i
-.PHONY : tools/qemu-diff/src/isa/riscv32/init.c.i
-
-tools/qemu-diff/src/isa/riscv32/init.s: tools/qemu-diff/src/isa/riscv32/init.c.s
-
-.PHONY : tools/qemu-diff/src/isa/riscv32/init.s
-
-# target to generate assembly for a file
-tools/qemu-diff/src/isa/riscv32/init.c.s:
-	$(MAKE) -f CMakeFiles/nemu.dir/build.make CMakeFiles/nemu.dir/tools/qemu-diff/src/isa/riscv32/init.c.s
-.PHONY : tools/qemu-diff/src/isa/riscv32/init.c.s
-
 tools/qemu-diff/src/isa/x86/init.o: tools/qemu-diff/src/isa/x86/init.c.o
 
 .PHONY : tools/qemu-diff/src/isa/x86/init.o
@@ -1500,12 +1446,6 @@ help:
 	@echo "... tools/qemu-diff/src/gdb-host.o"
 	@echo "... tools/qemu-diff/src/gdb-host.i"
 	@echo "... tools/qemu-diff/src/gdb-host.s"
-	@echo "... tools/qemu-diff/src/isa/mips32/init.o"
-	@echo "... tools/qemu-diff/src/isa/mips32/init.i"
-	@echo "... tools/qemu-diff/src/isa/mips32/init.s"
-	@echo "... tools/qemu-diff/src/isa/riscv32/init.o"
-	@echo "... tools/qemu-diff/src/isa/riscv32/init.i"
-	@echo "... tools/qemu-diff/src/isa/riscv32/init.s"
 	@echo "... tools/qemu-diff/src/isa/x86/init.o"
 	@echo "... tools/qemu-diff/src/isa/x86/init.i"
 	@echo "... tools/qemu-diff/src/isa/x86/init.s"

@@ -50,7 +50,13 @@ make_group(gp7,
     EMPTY, EMPTY, EMPTY, EMPTY)
 
 /* TODO: Add more instructions!!! */
-
+/* 译码查找表,
+ * 这一张表通过操作码opcode来索引,
+ * 它记录了每一个opcode对应指令
+ * 的译码辅助函数, 执行辅助函数, 以及操作数宽度.
+ * 有了这些信息, 我们就可以得知指令的具体操作了,
+ * 例如对两个寄存器进行加法操作
+ * */
 static OpcodeEntry opcode_table [512] = {
   /* 0x00 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x04 */	EMPTY, EMPTY, EMPTY, EMPTY,
@@ -192,9 +198,37 @@ static make_EHelper(2byte_esc) {
   idex(pc, &opcode_table[opcode]);
 }
 
+/* decinfo.seq_pc的地址将被作为参数送进isa_exec()函数。
+ * isa_exec()显然是一个用于屏蔽ISA差异的API:
+ * 不同ISA的指令行为天然不同
+ * isa_exec()做的第一件事情就是取指令.
+ * 在NEMU中, 有一个函数instr_fetch()
+ * (在nemu/include/cpu/exec.h中定义)专门负责取指令的工作.
+ * 阅读这个函数的代码, 你就会发现取指操作的本质:
+ * 不过就是一次内存的访问而已.
+ * */
 void isa_exec(vaddr_t *pc) {
+  // 取指(instruction fetch, IF)
   uint32_t opcode = instr_fetch(pc, 1);
   decinfo.opcode = opcode;
+  /* 操作数宽度的处理
+   * mips32和riscv32的访存指令会有不同操作数宽度的版本,
+   * 包括32位, 16位和8位,
+   * 因此我们还需要把宽度信息记录到decinfo中提供后续过程使用.
+   * 对于x86来说就更复杂了,
+   * 大部分指令都有不同操作数宽度的版本,
+   * 因此x86的操作数宽度信息记录会更复杂:
+   * 首先通过set_width()函数记录译码查找表中记录的操作数宽度;
+   * 若这一操作数宽度结果为0, 表示仅仅根据操作码来判断,
+   * 操作数宽度还不能确定, 可能是16位或者32位,
+   * 需要通过decinfo.isa.is_operand_size_16成员变量来决定.
+   * 这其实实现了"操作数宽度前缀"的相关功能
+   * */
   set_width(opcode_table[opcode].width);
+  /* 译码和执行
+   * 这个从译码查找表中取得的元素将会被作为参数,
+   * 调用idex()函数(在nemu/include/cpu/exec.h中定义).
+   * 顾名思义, 这个函数就是用来进行译码和执行的.
+   * */
   idex(pc, &opcode_table[opcode]);
 }

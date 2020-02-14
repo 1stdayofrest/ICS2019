@@ -41,8 +41,13 @@ void cpu_exec(uint64_t n) {
   for (; n > 0; n --) {
     __attribute__((unused)) vaddr_t ori_pc = cpu.pc;
 
-    /* Execute one instruction, including instruction fetch,
-     * instruction decode, and the actual execution. */
+    /* cpu_exec()模拟了CPU的工作方式: 不断执行指令.
+     * exec_once()函数让CPU执行当前PC指向的一条指令,
+     * 然后更新PC.
+     * Execute one instruction, including instruction fetch,
+     * instruction decode, and the actual execution.
+     * __attribute__((unused)) 告诉编译器忽略未使用警告
+     * */
     __attribute__((unused)) vaddr_t seq_pc = exec_once();
 
 #if defined(DIFF_TEST)

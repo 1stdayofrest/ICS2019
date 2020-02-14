@@ -4,31 +4,36 @@
 #include "common.h"
 #include "cpu/decode.h"
 
+/* cpu_exec()模拟了CPU的工作方式: 不断执行指令.
+ * exec_once()函数(在nemu/src/cpu/cpu.c中定义)
+ * 让CPU执行当前PC指向的一条指令, 然后更新PC.
+ * */
 struct ISADecodeInfo {
   bool is_operand_size_16;
   uint8_t ext_opcode;
 };
 
-#define suffix_char(width) ((width) == 4 ? 'l' : ((width) == 1 ? 'b' : ((width) == 2 ? 'w' : '?')))
+#define suffix_char(width)                                                     \
+  ((width) == 4 ? 'l' : ((width) == 1 ? 'b' : ((width) == 2 ? 'w' : '?')))
 
 typedef union {
   struct {
-    uint8_t R_M		:3;
-    uint8_t reg		:3;
-    uint8_t mod		:2;
+    uint8_t R_M : 3;
+    uint8_t reg : 3;
+    uint8_t mod : 2;
   };
   struct {
-    uint8_t dont_care	:3;
-    uint8_t opcode		:3;
+    uint8_t dont_care : 3;
+    uint8_t opcode : 3;
   };
   uint8_t val;
 } ModR_M;
 
 typedef union {
   struct {
-    uint8_t base	:3;
-    uint8_t index	:3;
-    uint8_t ss		:2;
+    uint8_t base : 3;
+    uint8_t index : 3;
+    uint8_t ss : 2;
   };
   uint8_t val;
 } SIB;

@@ -84,7 +84,7 @@ static int cmd_info(char *args){
     printf("esi:  0x%-10x    %-10d\n", cpu.esi, cpu.esi);
     printf("esp:  0x%-10x    %-10d\n", cpu.esp, cpu.esp);
     printf("edi:  0x%-10x    %-10d\n", cpu.edi, cpu.edi);
-    printf("pc:  0x%-10x    %-10d\n", cpu.pc, cpu.pc);
+    printf("pc:   0x%-10x    %-10d\n", cpu.pc, cpu.pc);
   }
   else if (strcmp(args, "w") == 0) {
     display_wp();
