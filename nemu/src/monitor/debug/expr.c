@@ -397,7 +397,7 @@ int find_dominant_operator(int p, int q) {
           cnt++;
       }
     } else {
-      opp = priority(i);//panduan opcode shifouhefa
+      opp = priority(i);//判断 opcode 是否合法
       if (opp >= op) {
         pos = i;
         op = opp;
