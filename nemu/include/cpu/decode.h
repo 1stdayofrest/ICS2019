@@ -2,7 +2,18 @@
 #define __CPU_DECODE_H__
 
 #include "common.h"
-
+/* 我们还是不知道操作对象(例如具体要对哪两个寄存器进行加法操作呢).
+ * 为了解决这个问题, 框架代码需要进行进一步的译码工作.
+ * 具体地, idex()将会根据从译码查找表中取得的内容,
+ * 进一步调用相应的译码辅助函数(decode helper function).
+ * 译码辅助函数统一通过宏
+ * make_DHelper(在nemu/include/cpu/decode.h中定义)来定义:
+ * 每个译码辅助函数负责进行一种类型的操作数译码,
+ * 把指令中的操作数信息分别记录在
+ * 全局译码信息decinfo的src成员, src2成员和dest成员中,
+ * 它们分别代表两个源操作数和一个目的操作数.
+ * nemu/include/cpu/decode.h中定义了
+ * 三个宏id_src, id_src2和id_dest, 用于方便地访问它们.*/
 #define make_DHelper(name) void concat(decode_, name) (vaddr_t *pc)
 /* typedef void (*DHelper) (vaddr_t *)
  * 写成void (*DHelper)，说明 DHelper 是一个指针

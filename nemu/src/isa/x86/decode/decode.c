@@ -1,11 +1,30 @@
 #include "cpu/exec.h"
 
+/* 译码辅助函数的命名很直观, 直接反映了操作数的类型和数据流向.
+ * 以nemu/src/isa/x86/decode/decode.c为例,
+ * 其中的译码辅助函数主要以i386手册附录A中的操作数表示记号来命名.
+ * 例如I2r表示将立即数移入寄存器,
+ * 其中I表示立即数, 2表示英文to,
+ * r表示通用寄存器, 更多的记号请参考i386手册.*/
+
 // decode operand helper
+/* 我们会发现, 类似寄存器和立即数这些操作数,
+ * 其实是非常常见的操作数类型.
+ * 为了进一步实现操作数译码和指令译码的解耦,
+ * 框架代码对这些操作数的译码进行了抽象封装,
+ * 指令译码过程由若干操作数译码辅助函数
+ * (operand decode helper function)组成.
+ * 操作数译码辅助函数统一通过宏make_DopHelper来定义*/
 #define make_DopHelper(name) void concat(decode_op_, name) (vaddr_t *pc, Operand *op, bool load_val)
 
 /* Refer to Appendix A in i386 manual for the explanations of these abbreviations */
 
-/* Ib, Iv */
+/* Ib, Iv
+ * 对于立即数指令
+ * op->imm = instr_fetch(pc, op->width);
+ * 将34 12 00 00这个字节序列原封不动地从内存读入imm变量中,
+ * 主机的CPU会按照小端方式来解释这一字节序列,
+ * 于是会得到0x1234, 符合我们的预期结果.*/
 static inline make_DopHelper(I) {
   /* pc here is pointing to the immediate */
   op->type = OP_TYPE_IMM;

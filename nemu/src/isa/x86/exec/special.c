@@ -4,7 +4,8 @@
 make_EHelper(nop) {
   print_asm("nop");
 }
-
+/* 错误代码
+ * 打印错误信息*/
 make_EHelper(inv) {
   /* invalid opcode */
 
