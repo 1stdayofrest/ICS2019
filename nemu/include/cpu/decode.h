@@ -27,16 +27,16 @@ typedef void (*DHelper) (vaddr_t *);
 enum { OP_TYPE_REG, OP_TYPE_MEM, OP_TYPE_IMM };
 
 typedef struct {
-  uint32_t type;
-  int width;
+  uint32_t type;//操作数类型
+  int width;    //操作数宽度
   union {
-    uint32_t reg;
-    rtlreg_t addr;
-    uint32_t imm;
-    int32_t simm;
+    uint32_t reg; //寄存器操作数
+    rtlreg_t addr;//操作数地址
+    uint32_t imm; //立即数操作数
+    int32_t simm; //无符号立即操作数
   };
-  rtlreg_t val;
-  char str[OP_STR_SIZE];
+  rtlreg_t val;   //RTL寄存器
+  char str[OP_STR_SIZE];//操作数指令
 } Operand;
 
 #include "isa/decode.h"

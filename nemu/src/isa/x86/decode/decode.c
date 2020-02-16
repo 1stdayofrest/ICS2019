@@ -47,10 +47,14 @@ static inline make_DopHelper(SI) {
   /* TODO: Use instr_fetch() to read `op->width' bytes of memory
    * pointed by 'pc'. Interpret the result as a signed immediate,
    * and assign it to op->simm.
-   *
+   * 由于CISC指令变长的特性,
+   * x86指令长度和指令形式需要一边取指一边译码来确定,
+   * 而不像RISC指令集那样可以泾渭分明地处理取指和译码阶段,
+   * 因此你会在x86的操作数译码辅助函数中看到
+   * instr_fetch()的操作.
    op->simm = ???
    */
-  TODO();
+  op->imm = instr_fetch(pc, op->width);//读取符号操作数，和有符号的一样？？
 
   rtl_li(&op->val, op->simm);
 

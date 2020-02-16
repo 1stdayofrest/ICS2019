@@ -18,7 +18,14 @@ static make_EHelper(2byte_esc);
   static make_EHelper(name) {                                                  \
     idex(pc, &concat(opcode_table_, name)[decinfo.isa.ext_opcode]);            \
   }
-
+/* 另一种方法是使用ModR/M字节中的扩展opcode域来对opcode的长度进行扩充.
+ * 有些时候, 读入一个字节也还不能完全确定具体的指令形式,
+ * 这时候需要读入紧跟在opcode后面的ModR/M字节,
+ * 把其中的reg/opcode域当做opcode的一部分来解释,
+ * 才能决定具体的指令形式.
+ * x86把这些指令划分成不同的指令组(instruction group),
+ * 在同一个指令组中的指令需要通过
+ * ModR/M字节中的扩展opcode域来区分.*/
 /* 0x80, 0x81, 0x83 */
 make_group(gp1, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
 
