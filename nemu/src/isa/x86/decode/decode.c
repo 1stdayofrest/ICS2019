@@ -76,9 +76,9 @@ static inline make_DopHelper(a) {
  * eXX: eAX, eCX, eDX, eBX, eSP, eBP, eSI, eDI
  */
 static inline make_DopHelper(r) {
-  op->type = OP_TYPE_REG;
-  op->reg = decinfo.opcode & 0x7;
-  if (load_val) {
+  op->type = OP_TYPE_REG; //操作 寄存器
+  op->reg = decinfo.opcode & 0x7; //判断寄存器
+  if (load_val) {//如果是将opcode对应的寄存器读取到目标寄存器
     rtl_lr(&op->val, op->reg, op->width);
   }
 
@@ -174,8 +174,8 @@ make_DHelper(I2r) {
 }
 
 make_DHelper(mov_I2r) {
-  decode_op_r(pc, id_dest, false);
-  decode_op_I(pc, id_src, true);
+  decode_op_r(pc, id_dest, false);//操作数译码 目标操作数id_dest
+  decode_op_I(pc, id_src, true);  //操作数译码 源操作数 id_src
 }
 
 /* used by unary operations */
