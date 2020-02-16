@@ -1,7 +1,6 @@
 int init_monitor(int, char *[]);
 void ui_mainloop(int);
 
-#include <stdio.h>
 /*
  * 我们已经知道, NEMU是一个用来执行客户程序的程序,
  * 但客户程序一开始并不存在于客户计算机中.
