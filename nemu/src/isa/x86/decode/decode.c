@@ -14,7 +14,14 @@
  * 框架代码对这些操作数的译码进行了抽象封装,
  * 指令译码过程由若干操作数译码辅助函数
  * (operand decode helper function)组成.
- * 操作数译码辅助函数统一通过宏make_DopHelper来定义*/
+ * 操作数译码辅助函数统一通过宏make_DopHelper来定义
+ * 将带有一个load_val参数,
+ * 用于控制是否需要将该操作数读出到全局译码信息decinfo供后续使用.
+ * 例如如果一个内存操作数是源操作数,
+ * 就需要将这个操作数从内存中读出来供后续执行阶段来使用;
+ * 如果它仅仅是一个目的操作数, 就不需要从内存读出它的值了,
+ * 因为执行这条指令并不需要这个值,
+ * 而是将新数据写入相应的内存位置.*/
 #define make_DopHelper(name) void concat(decode_op_, name) (vaddr_t *pc, Operand *op, bool load_val)
 
 /* Refer to Appendix A in i386 manual for the explanations of these abbreviations */
