@@ -89,10 +89,11 @@ static inline make_DopHelper(a) {
 static inline make_DopHelper(r) {
   op->type = OP_TYPE_REG; //操作 寄存器
   op->reg = decinfo.opcode & 0x7; //判断寄存器
-  if (load_val) {//如果是将opcode对应的寄存器读取到目标寄存器
-    rtl_lr(&op->val, op->reg, op->width);
-  }
-
+  if (load_val) {//函数中将带有一个load_val参数, 用于控制是否需要将该操作数读出到全局译码信息decinfo供后续使用.
+    rtl_lr(&op->val, op->reg, op->width);//load_val是否需要记录
+  } //例如如果一个内存操作数是源操作数, 就需要将这个操作数从内存中读出来供后续执行阶段来使用;
+  // 如果它仅仅是一个目的操作数, 就不需要从内存读出它的值了, 因为执行这条指令并不需要这个值,
+  // 而是将新数据写入相应的内存位置.
   print_Dop(op->str, OP_STR_SIZE, "%%%s", reg_name(op->reg, op->width));
 }
 
@@ -288,7 +289,7 @@ make_DHelper(a2O) {
   decode_op_O(pc, id_dest, false);
 }
 
-make_DHelper(J) {
+make_DHelper(J) {//跳转指令
   decode_op_SI(pc, id_dest, false);
   // the target address can be computed in the decode stage
   decinfo.jmp_pc = id_dest->simm + *pc;
