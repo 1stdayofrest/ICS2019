@@ -2,9 +2,9 @@
 
 #ifdef HAS_IOE
 
-#include <sys/time.h>
-#include <signal.h>
 #include <SDL2/SDL.h>
+#include <signal.h>
+#include <sys/time.h>
 
 #define TIMER_HZ 100
 #define VGA_HZ 50
@@ -38,28 +38,30 @@ void device_update() {
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
     switch (event.type) {
-      case SDL_QUIT: {
-                       void monitor_statistic();
-                       monitor_statistic();
-                       exit(0);
-                     }
+    case SDL_QUIT: {
+      void monitor_statistic();
+      monitor_statistic();
+      exit(0);
+    }
 
-                     // If a key was pressed
-      case SDL_KEYDOWN:
-      case SDL_KEYUP: {
-                        uint8_t k = event.key.keysym.scancode;
-                        bool is_keydown = (event.key.type == SDL_KEYDOWN);
-                        send_key(k, is_keydown);
-                        break;
-                      }
-      default: break;
+      // If a key was pressed
+    case SDL_KEYDOWN:
+    case SDL_KEYUP: {
+      uint8_t k = event.key.keysym.scancode;
+      bool is_keydown = (event.key.type == SDL_KEYDOWN);
+      send_key(k, is_keydown);
+      break;
+    }
+    default:
+      break;
     }
   }
 }
 
 void sdl_clear_event_queue() {
   SDL_Event event;
-  while (SDL_PollEvent(&event));
+  while (SDL_PollEvent(&event))
+    ;
 }
 
 void init_device() {
@@ -81,7 +83,6 @@ void init_device() {
 }
 #else
 
-void init_device() {
-}
+void init_device() {}
 
-#endif	/* HAS_IOE */
+#endif /* HAS_IOE */
