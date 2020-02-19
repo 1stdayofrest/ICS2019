@@ -27,8 +27,9 @@ static make_EHelper(2byte_esc);
  * 在同一个指令组中的指令需要通过
  * ModR/M字节中的扩展opcode域来区分.*/
 /* 0x80, 0x81, 0x83 */
-make_group(gp1, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
-
+make_group(gp1,
+           EX(add), EX(or), EMPTY, EX(sbb),
+           EX(and), EX(sub), EX(xor), EX(cmp))
     /* 0xc0, 0xc1, 0xd0, 0xd1, 0xd2, 0xd3 */
     make_group(gp2, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
 
