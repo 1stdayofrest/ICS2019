@@ -1,11 +1,11 @@
 #include "cpu/exec.h"
 
 CPU_state cpu;
-
+//临时寄存器
 rtlreg_t s0, s1, t0, t1, ir;
 
 /* shared by all helper functions */
-DecodeInfo decinfo;
+DecodeInfo decinfo;//全局译码信息
 
 void decinfo_set_jmp(bool is_jmp) {
   decinfo.is_jmp = is_jmp;

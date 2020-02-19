@@ -26,7 +26,9 @@ static inline void rtl_sr(int r, const rtlreg_t* src1, int width) {
 static inline void rtl_push(const rtlreg_t* src1) {
   // esp <- esp - 4
   // M[esp] <- src1
-  TODO();
+  //TODO();每次push操作都会使esp向低地值移动4位
+  cpu.esp -= 4;//为什么这么写
+  vaddr_write(cpu.esp, 4, *src1);
 }
 
 static inline void rtl_pop(rtlreg_t* dest) {

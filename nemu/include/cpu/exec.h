@@ -35,7 +35,7 @@ static inline uint32_t instr_fetch(vaddr_t *pc, int len) {
     strcatf(log_bytebuf, "%02x ", p_instr[i]);
   }
 #endif
-  (*pc) += len;
+  (*pc) += len;//pc一边读一边加
   return instr;
 }
 
@@ -48,7 +48,7 @@ static inline void idex(vaddr_t *pc, OpcodeEntry *e) {
 
 static inline void update_pc(void) {
   if (decinfo.is_jmp) {
-    decinfo.is_jmp = 0;
+    decinfo.is_jmp = 0;//
   } else {
     cpu.pc = decinfo.seq_pc;
   }

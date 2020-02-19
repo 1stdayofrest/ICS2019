@@ -24,10 +24,11 @@ make_EHelper(jmp_rm) {
   print_asm("jmp *%s", id_dest->str);
 }
 
-make_EHelper(call) {
+make_EHelper(call) {//跳转指令
   // the target address is calculated at the decode stage
-  //TODO()
-
+  //TODO() rtl push操作是什么意思
+  rtl_push(&decinfo.seq_pc);
+  decinfo.is_jmp = 1;
   print_asm("call %x", decinfo.jmp_pc);
 }
 

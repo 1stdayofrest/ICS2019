@@ -33,10 +33,10 @@
  * 主机的CPU会按照小端方式来解释这一字节序列,
  * 于是会得到0x1234, 符合我们的预期结果.*/
 static inline make_DopHelper(I) {
-  /* pc here is pointing to the immediate */
+  /* pc here is pointing to the immediate 为什么pc指向立即数 */
   op->type = OP_TYPE_IMM;
   op->imm = instr_fetch(pc, op->width);
-  rtl_li(&op->val, op->imm);
+  rtl_li(&op->val, op->imm);//立即数读入 rtl 寄存器，用来记录 立即数
 
   print_Dop(op->str, OP_STR_SIZE, "$0x%x", op->imm);
 }
@@ -59,10 +59,18 @@ static inline make_DopHelper(SI) {
    * 而不像RISC指令集那样可以泾渭分明地处理取指和译码阶段,
    * 因此你会在x86的操作数译码辅助函数中看到
    * instr_fetch()的操作.
-   op->simm = ???
+   op->simm = ??? 有符号立即数和无符号立即数的区别
    */
-  op->imm = instr_fetch(pc, op->width);//读取符号操作数，和有符号的一样？？
-
+  //读取符号操作数，和有符号的一样？？
+  if (op->width == 4) {
+    op->simm = instr_fetch(pc, op->width);
+  }
+  else if (op->width == 2) {
+    op->simm = (int16_t)((uint16_t)instr_fetch(pc, op->width));
+  }
+  else {
+    op->simm = (int16_t)(int8_t)((uint8_t)instr_fetch(pc, op->width));
+  }
   rtl_li(&op->val, op->simm);
 
   print_Dop(op->str, OP_STR_SIZE, "$0x%x", op->simm);
