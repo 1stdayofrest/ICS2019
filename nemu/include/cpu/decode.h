@@ -35,19 +35,19 @@ typedef struct {
     uint32_t imm; //立即数操作数
     int32_t simm; //无符号立即操作数
   };
-  rtlreg_t val;   //RTL寄存器
+  rtlreg_t val;   //操作数对应的RTL寄存器
   char str[OP_STR_SIZE];//操作数指令
 } Operand;
 
 #include "isa/decode.h"
 
 typedef struct {
-  uint32_t opcode; //
-  uint32_t width;  //
+  uint32_t opcode; //操作码类型
+  uint32_t width;  //操作码宽度
   vaddr_t seq_pc;  // sequential pc
-  bool is_jmp;     //
+  bool is_jmp;     //是否是跳转操作
   vaddr_t jmp_pc;  //
-  Operand src, dest, src2;
+  Operand src, dest, src2;//操作数
   /* decinfo结构在nemu/src/cpu/cpu.c中定义,
    * 它用于记录一些全局译码信息供后续使用,
    * 包括操作数的类型, 宽度, 值等信息. 还有一些信息是ISA相关的,
