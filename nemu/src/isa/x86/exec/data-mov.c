@@ -6,8 +6,11 @@ make_EHelper(mov) {
 }
 
 make_EHelper(push) {
-  TODO();
-
+  //  TODO();
+  if (id_dest->width == 1) {
+    id_dest->val = (int32_t)(int8_t)id_dest->val;
+  }
+  rtl_push(&id_dest->val);
   print_asm_template1(push);
 }
 
@@ -38,8 +41,7 @@ make_EHelper(leave) {
 make_EHelper(cltd) {
   if (decinfo.isa.is_operand_size_16) {
     TODO();
-  }
-  else {
+  } else {
     TODO();
   }
 
@@ -49,8 +51,7 @@ make_EHelper(cltd) {
 make_EHelper(cwtl) {
   if (decinfo.isa.is_operand_size_16) {
     TODO();
-  }
-  else {
+  } else {
     TODO();
   }
 
