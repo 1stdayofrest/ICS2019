@@ -33,8 +33,9 @@ make_EHelper(call) {//跳转指令
 }
 
 make_EHelper(ret) {
-  TODO();
-
+  //TODO();
+  rtl_pop(&decinfo.jmp_pc);
+  rtl_j(decinfo.jmp_pc);
   print_asm("ret");
 }
 
