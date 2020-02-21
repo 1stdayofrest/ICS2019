@@ -6,7 +6,7 @@
 #include "rtl/relop.h"
 #include "rtl/rtl-wrapper.h"
 
-extern rtlreg_t s0, s1, t0, t1, ir;
+extern rtlreg_t s0, s1, t0, t1, t2, t3,ir;
 
 void decinfo_set_jmp(bool is_jmp);
 bool interpret_relop(uint32_t relop, const rtlreg_t src1, const rtlreg_t src2);
@@ -20,7 +20,7 @@ static inline void interpret_rtl_li(rtlreg_t* dest, uint32_t imm) {
 static inline void interpret_rtl_mv(rtlreg_t* dest, const rtlreg_t *src1) {
   *dest = *src1;
 }
-
+//寄存器操作 寄存器和立即数操作
 #define make_rtl_arith_logic(name) \
   static inline void concat(interpret_rtl_, name) (rtlreg_t* dest, const rtlreg_t* src1, const rtlreg_t* src2) { \
     *dest = concat(c_, name) (*src1, *src2); \
@@ -139,7 +139,7 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
   // dest <- signext(src1[(width * 8 - 1) .. 0])
   TODO();
 }
-
+//更新标志符操作
 static inline void rtl_setrelopi(uint32_t relop, rtlreg_t *dest,
     const rtlreg_t *src1, int imm) {
   rtl_li(&ir, imm);

@@ -1,14 +1,40 @@
 #include "cpu/exec.h"
 
 make_EHelper(add) {
-  TODO();
+  // TODO();
+  /*  rtl_add(&t2, &id_dest->val, &id_src->val);
+    operand_write(id_dest, &t2);
 
-  print_asm_template2(add);
+    rtl_update_ZFSF(&t2, id_dest->width);
+
+    rtl_sltu(&t0, &t2, &id_dest->val);
+    rtl_set_CF(&t0);
+
+    rtl_xor(&t0, &id_dest->val, &id_src->val);
+    rtl_not(&t0);
+    rtl_xor(&t1, &id_dest->val, &t2);
+    rtl_and(&t0, &t0, &t1);
+    rtl_msb(&t0, &t0, id_dest->width);
+    rtl_set_OF(&t0);
+    print_asm_template2(add);*/
 }
 
 make_EHelper(sub) {
-  TODO();
+  // TODO(); 执行阶段 减法操作
+  rtl_sub(&t2, &id_dest->val, &id_src->val);
+  rtl_setrelop(RELOP_LTU, &t3, &id_dest->val, &t2);
+  operand_write(id_dest, &t2);
+  rtl_update_ZFSF(&t2, id_dest->width);
 
+  rtl_setrelop(RELOP_LTU, &t0, &id_dest->val, &t2);
+  rtl_or(&t0, &t3, &t0);
+  rtl_set_CF(&t0);
+
+  rtl_xor(&t0, &id_dest->val, &id_src->val);
+  rtl_xor(&t1, &id_dest->val, &t2);
+  rtl_and(&t0, &t0, &t1);
+  rtl_msb(&t0, &t0, id_dest->width);
+  rtl_set_OF(&t0);
   print_asm_template2(sub);
 }
 
@@ -97,20 +123,21 @@ make_EHelper(mul) {
   rtl_mul_lo(&s1, &id_dest->val, &s0);
 
   switch (id_dest->width) {
-    case 1:
-      rtl_sr(R_AX, &s1, 2);
-      break;
-    case 2:
-      rtl_sr(R_AX, &s1, 2);
-      rtl_shri(&s1, &s1, 16);
-      rtl_sr(R_DX, &s1, 2);
-      break;
-    case 4:
-      rtl_mul_hi(&s0, &id_dest->val, &s0);
-      rtl_sr(R_EDX, &s0, 4);
-      rtl_sr(R_EAX, &s1, 4);
-      break;
-    default: assert(0);
+  case 1:
+    rtl_sr(R_AX, &s1, 2);
+    break;
+  case 2:
+    rtl_sr(R_AX, &s1, 2);
+    rtl_shri(&s1, &s1, 16);
+    rtl_sr(R_DX, &s1, 2);
+    break;
+  case 4:
+    rtl_mul_hi(&s0, &id_dest->val, &s0);
+    rtl_sr(R_EDX, &s0, 4);
+    rtl_sr(R_EAX, &s1, 4);
+    break;
+  default:
+    assert(0);
   }
 
   print_asm_template1(mul);
@@ -122,20 +149,21 @@ make_EHelper(imul1) {
   rtl_imul_lo(&s1, &id_dest->val, &s0);
 
   switch (id_dest->width) {
-    case 1:
-      rtl_sr(R_AX, &s1, 2);
-      break;
-    case 2:
-      rtl_sr(R_AX, &s1, 2);
-      rtl_shri(&s1, &s1, 16);
-      rtl_sr(R_DX, &s1, 2);
-      break;
-    case 4:
-      rtl_imul_hi(&s0, &id_dest->val, &s0);
-      rtl_sr(R_EDX, &s0, 4);
-      rtl_sr(R_EAX, &s1, 4);
-      break;
-    default: assert(0);
+  case 1:
+    rtl_sr(R_AX, &s1, 2);
+    break;
+  case 2:
+    rtl_sr(R_AX, &s1, 2);
+    rtl_shri(&s1, &s1, 16);
+    rtl_sr(R_DX, &s1, 2);
+    break;
+  case 4:
+    rtl_imul_hi(&s0, &id_dest->val, &s0);
+    rtl_sr(R_EDX, &s0, 4);
+    rtl_sr(R_EAX, &s1, 4);
+    break;
+  default:
+    assert(0);
   }
 
   print_asm_template1(imul);
@@ -165,30 +193,31 @@ make_EHelper(imul3) {
 
 make_EHelper(div) {
   switch (id_dest->width) {
-    case 1:
-      rtl_lr(&s0, R_AX, 2);
-      rtl_div_q(&s1, &s0, &id_dest->val);
-      rtl_sr(R_AL, &s1, 1);
-      rtl_div_r(&s1, &s0, &id_dest->val);
-      rtl_sr(R_AH, &s1, 1);
-      break;
-    case 2:
-      rtl_lr(&s0, R_AX, 2);
-      rtl_lr(&s1, R_DX, 2);
-      rtl_shli(&s1, &s1, 16);
-      rtl_or(&s0, &s0, &s1);
-      rtl_div_q(&s1, &s0, &id_dest->val);
-      rtl_sr(R_AX, &s1, 2);
-      rtl_div_r(&s1, &s0, &id_dest->val);
-      rtl_sr(R_DX, &s1, 2);
-      break;
-    case 4:
-      rtl_lr(&s0, R_EAX, 4);
-      rtl_lr(&s1, R_EDX, 4);
-      rtl_div64_q(&cpu.eax, &s1, &s0, &id_dest->val);
-      rtl_div64_r(&cpu.edx, &s1, &s0, &id_dest->val);
-      break;
-    default: assert(0);
+  case 1:
+    rtl_lr(&s0, R_AX, 2);
+    rtl_div_q(&s1, &s0, &id_dest->val);
+    rtl_sr(R_AL, &s1, 1);
+    rtl_div_r(&s1, &s0, &id_dest->val);
+    rtl_sr(R_AH, &s1, 1);
+    break;
+  case 2:
+    rtl_lr(&s0, R_AX, 2);
+    rtl_lr(&s1, R_DX, 2);
+    rtl_shli(&s1, &s1, 16);
+    rtl_or(&s0, &s0, &s1);
+    rtl_div_q(&s1, &s0, &id_dest->val);
+    rtl_sr(R_AX, &s1, 2);
+    rtl_div_r(&s1, &s0, &id_dest->val);
+    rtl_sr(R_DX, &s1, 2);
+    break;
+  case 4:
+    rtl_lr(&s0, R_EAX, 4);
+    rtl_lr(&s1, R_EDX, 4);
+    rtl_div64_q(&cpu.eax, &s1, &s0, &id_dest->val);
+    rtl_div64_r(&cpu.edx, &s1, &s0, &id_dest->val);
+    break;
+  default:
+    assert(0);
   }
 
   print_asm_template1(div);
@@ -196,30 +225,31 @@ make_EHelper(div) {
 
 make_EHelper(idiv) {
   switch (id_dest->width) {
-    case 1:
-      rtl_lr(&s0, R_AX, 2);
-      rtl_idiv_q(&s1, &s0, &id_dest->val);
-      rtl_sr(R_AL, &s1, 1);
-      rtl_idiv_r(&s1, &s0, &id_dest->val);
-      rtl_sr(R_AH, &s1, 1);
-      break;
-    case 2:
-      rtl_lr(&s0, R_AX, 2);
-      rtl_lr(&s1, R_DX, 2);
-      rtl_shli(&s1, &s1, 16);
-      rtl_or(&s0, &s0, &s1);
-      rtl_idiv_q(&s1, &s0, &id_dest->val);
-      rtl_sr(R_AX, &s1, 2);
-      rtl_idiv_r(&s1, &s0, &id_dest->val);
-      rtl_sr(R_DX, &s1, 2);
-      break;
-    case 4:
-      rtl_lr(&s0, R_EAX, 4);
-      rtl_lr(&s1, R_EDX, 4);
-      rtl_idiv64_q(&cpu.eax, &s1, &s0, &id_dest->val);
-      rtl_idiv64_r(&cpu.edx, &s1, &s0, &id_dest->val);
-      break;
-    default: assert(0);
+  case 1:
+    rtl_lr(&s0, R_AX, 2);
+    rtl_idiv_q(&s1, &s0, &id_dest->val);
+    rtl_sr(R_AL, &s1, 1);
+    rtl_idiv_r(&s1, &s0, &id_dest->val);
+    rtl_sr(R_AH, &s1, 1);
+    break;
+  case 2:
+    rtl_lr(&s0, R_AX, 2);
+    rtl_lr(&s1, R_DX, 2);
+    rtl_shli(&s1, &s1, 16);
+    rtl_or(&s0, &s0, &s1);
+    rtl_idiv_q(&s1, &s0, &id_dest->val);
+    rtl_sr(R_AX, &s1, 2);
+    rtl_idiv_r(&s1, &s0, &id_dest->val);
+    rtl_sr(R_DX, &s1, 2);
+    break;
+  case 4:
+    rtl_lr(&s0, R_EAX, 4);
+    rtl_lr(&s1, R_EDX, 4);
+    rtl_idiv64_q(&cpu.eax, &s1, &s0, &id_dest->val);
+    rtl_idiv64_r(&cpu.edx, &s1, &s0, &id_dest->val);
+    break;
+  default:
+    assert(0);
   }
 
   print_asm_template1(idiv);
