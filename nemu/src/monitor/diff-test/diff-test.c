@@ -2,10 +2,13 @@
 
 #include "nemu.h"
 #include "monitor/monitor.h"
-
+// 从DUT host memory的`src`处拷贝`n`字节到REF guest memory的`dest`处
 void (*ref_difftest_memcpy_from_dut)(paddr_t dest, void *src, size_t n) = NULL;
+// 获取REF的寄存器状态到`c`
 void (*ref_difftest_getregs)(void *c) = NULL;
+// 设置REF的寄存器状态为`c`
 void (*ref_difftest_setregs)(const void *c) = NULL;
+// 让REF执行`n`条指令
 void (*ref_difftest_exec)(uint64_t n) = NULL;
 
 static bool is_skip_ref = false;
@@ -73,7 +76,7 @@ void init_difftest(char *ref_so_file, long img_size) {
   Log("The result of every instruction will be compared with %s. "
       "This will help you a lot for debugging, but also significantly reduce the performance. "
       "If it is not necessary, you can turn it off in include/common.h.", ref_so_file);
-
+  //初始化REF的DiffTest功能
   ref_difftest_init();
   ref_difftest_memcpy_from_dut(PC_START, guest_to_host(IMAGE_START), img_size);
   char *mainargs = guest_to_host(0);
