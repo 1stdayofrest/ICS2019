@@ -27,9 +27,8 @@ static make_EHelper(2byte_esc);
  * 在同一个指令组中的指令需要通过
  * ModR/M字节中的扩展opcode域来区分.*/
 /* 0x80, 0x81, 0x83 */
-make_group(gp1,
-           EX(add), EX(or), EX(adc), EX(sbb),
-           EX(and), EX(sub), EX(xor), EX(cmp))
+make_group(gp1, EX(add), EX(or), EX(adc), EX(sbb), EX(and), EX(sub), EX(xor),
+           EX(cmp))
     /* 0xc0, 0xc1, 0xd0, 0xd1, 0xd2, 0xd3 */
     make_group(gp2, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
 
@@ -40,8 +39,9 @@ make_group(gp1,
     make_group(gp4, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
 
     /* 0xff */
-    make_group(gp5, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
-
+make_group(gp5,
+           EX(inc), EX(dec), EX(call_rm), EX(call),
+           EX(jmp_rm), EMPTY, EX(push), EMPTY)
     /* 0x0f 0x01*/
     make_group(gp7, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
 
@@ -66,7 +66,8 @@ make_group(gp1,
         /* 0x24 */ EMPTY, EMPTY, EMPTY, EMPTY,
         /* 0x28 */ EMPTY, EMPTY, EMPTY, EMPTY,
         /* 0x2c */ EMPTY, EMPTY, EMPTY, EMPTY,
-        /* 0x30 */ IDEXW(G2E, xor, 1), IDEX(G2E, xor), IDEXW(E2G, xor, 1), IDEX(E2G, xor),
+        /* 0x30 */ IDEXW(G2E, xor, 1), IDEX(G2E, xor), IDEXW(E2G, xor, 1),
+        IDEX(E2G, xor),
         /* 0x34 */ EMPTY, EMPTY, EMPTY, EMPTY,
         /* 0x38 */ EMPTY, EMPTY, EMPTY, EMPTY,
         /* 0x3c */ EMPTY, EMPTY, EMPTY, EMPTY,
@@ -90,7 +91,7 @@ make_group(gp1,
         /* 0x84 */ EMPTY, EMPTY, EMPTY, EMPTY,
         /* 0x88 */ IDEXW(mov_G2E, mov, 1), IDEX(mov_G2E, mov),
         IDEXW(mov_E2G, mov, 1), IDEX(mov_E2G, mov),
-        /* 0x8c */ EMPTY, IDEX(lea_M2G,lea), EMPTY, EMPTY,
+        /* 0x8c */ EMPTY, IDEX(lea_M2G, lea), EMPTY, EMPTY,
         /* 0x90 */ EMPTY, EMPTY, EMPTY, EMPTY,
         /* 0x94 */ EMPTY, EMPTY, EMPTY, EMPTY,
         /* 0x98 */ EMPTY, EMPTY, EMPTY, EMPTY,
