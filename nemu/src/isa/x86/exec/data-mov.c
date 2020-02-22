@@ -10,13 +10,18 @@ make_EHelper(push) {
   if (id_dest->width == 1) {
     id_dest->val = (int32_t)(int8_t)id_dest->val;
   }
-  rtl_push(&id_dest->val);
+  t0 = id_dest->val;
+  rtl_push(&t0);//把寄存器压栈
+  /*更新目的操作数*/
+  operand_write(id_dest,&t0);
   print_asm_template1(push);
 }
-
+/*pop和push的逻辑一模一样，就反过来，一个压栈，一个出栈就行了。*/
 make_EHelper(pop) {
-  TODO();
-
+  //TODO
+  rtl_pop(&t0);//把寄存器出栈
+  /*更新目的操作数*/
+  operand_write(id_dest,&t0);
   print_asm_template1(pop);
 }
 

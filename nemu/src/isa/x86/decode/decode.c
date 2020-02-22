@@ -320,10 +320,10 @@ make_DHelper(out_a2dx) {
 
 void operand_write(Operand *op, rtlreg_t *src) {
   if (op->type == OP_TYPE_REG) {
-    rtl_sr(op->reg, src, op->width);
+    rtl_sr(op->reg, src, op->width);//如果目的操作数是寄存器操作数,写入寄存器
   } else if (op->type == OP_TYPE_MEM) {
-    rtl_sm(&op->addr, src, op->width);
+    rtl_sm(&op->addr, src, op->width);//如果是在内存里面，写入内存
   } else {
-    assert(0);
+    assert(0);//不可能出现其他情况了
   }
 }
