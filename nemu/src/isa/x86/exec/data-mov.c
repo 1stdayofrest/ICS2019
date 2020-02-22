@@ -10,10 +10,9 @@ make_EHelper(push) {
   if (id_dest->width == 1) {
     id_dest->val = (int32_t)(int8_t)id_dest->val;
   }
-  t0 = id_dest->val;
-  rtl_push(&t0);//把寄存器压栈
-  /*更新目的操作数*/
-  operand_write(id_dest,&t0);
+  rtl_push(&id_dest->val);//把寄存器压栈
+  /*更新目的操作数,不用修改*/
+  //operand_write(id_dest,&t0);
   print_asm_template1(push);
 }
 /*pop和push的逻辑一模一样，就反过来，一个压栈，一个出栈就行了。*/
@@ -26,26 +25,43 @@ make_EHelper(pop) {
 }
 
 make_EHelper(pusha) {
-  TODO();
-
+  //TODO()
+  t0 = cpu.esp;
+  rtl_push(&cpu.eax);
+  rtl_push(&cpu.ecx);
+  rtl_push(&cpu.edx);
+  rtl_push(&cpu.ebx);
+  rtl_push(&t0);
+  rtl_push(&cpu.ebp);
+  rtl_push(&cpu.esi);
+  rtl_push(&cpu.edi);
   print_asm("pusha");
 }
 
 make_EHelper(popa) {
-  TODO();
+  //TODO();
+  rtl_pop(&cpu.edi);
+  rtl_pop(&cpu.esi);
+  rtl_pop(&cpu.ebp);
+  rtl_pop(&t0);
+  rtl_pop(&cpu.ebx);
+  rtl_pop(&cpu.edx);
+  rtl_pop(&cpu.ecx);
+  rtl_pop(&cpu.eax);
 
   print_asm("popa");
 }
 
 make_EHelper(leave) {
-  TODO();
-
+  //TODO();
+  rtl_mv(&cpu.esp, &cpu.ebp);
+  rtl_pop(&cpu.ebp);
   print_asm("leave");
 }
 
 make_EHelper(cltd) {
   if (decinfo.isa.is_operand_size_16) {
-    TODO();
+    //TODO();
   } else {
     TODO();
   }
