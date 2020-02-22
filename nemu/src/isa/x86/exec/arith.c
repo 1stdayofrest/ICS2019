@@ -39,8 +39,9 @@ make_EHelper(sub) {
 }
 
 make_EHelper(cmp) {
-  //TODO
-  /*rtl_sub(&t0, &id_dest->val, &id_src->val);//源操作数与目的操作数相减，结果存在t0
+  // TODO
+  /*rtl_sub(&t0, &id_dest->val,
+  &id_src->val);//源操作数与目的操作数相减，结果存在t0
 
   rtl_update_ZFSF(&t2, id_dest->width);
 
@@ -104,8 +105,9 @@ make_EHelper(adc) {
   rtl_update_ZFSF(&s1, id_dest->width);
 
   // update CF
-  rtl_is_add_carry(&s1, &s1, &s0);
-  rtl_is_add_carry(&s0, &s0, &id_dest->val);
+  rtl_setrelop(RELOP_LTU, &t0, &t2, &id_dest->val);
+  // rtl_is_add_carry(&s1, &s1, &s0);
+  // rtl_is_add_carry(&s0, &s0, &id_dest->val);
   rtl_or(&s0, &s0, &s1);
   rtl_set_CF(&s0);
 
