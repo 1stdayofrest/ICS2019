@@ -45,7 +45,7 @@ void init_isa(void) {
   gdb_getregs(&r);
 
   // set cs:eip to 0000:7c00
-  r.eip = 0x7c00;
+  r.pc = 0x7c00;
   r.cs = 0x0000;
   ok = gdb_setregs(&r);
   assert(ok == 1);
