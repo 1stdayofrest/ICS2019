@@ -66,7 +66,7 @@ static inline make_DopHelper(SI) {
   //读取符号操作数，和有符号的一样？？
   if (op->width == 4) {
     op->simm = instr_fetch(pc, op->width);
-  } else if (op->width == 2) {
+  } else if (op->width == 2) {//截断+符号扩展
     op->simm = (int16_t)((uint16_t)instr_fetch(pc, op->width));
   } else {
     op->simm = (int16_t)(int8_t)((uint8_t)instr_fetch(pc, op->width));

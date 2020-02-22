@@ -9,8 +9,14 @@ make_EHelper(test) {
 }
 
 make_EHelper(and) {
-  TODO();
+  //TODO
+  rtl_and(&t1, &id_dest->val, &id_src->val); //目的操作数与源操作数相与
+  operand_write(id_dest, &t1); //写入目的操作数
 
+  rtl_update_ZFSF(&t0, id_dest->width); //更新ZFSF位
+  t0 = 0;
+  rtl_set_OF(&t0); //设置OF位为0
+  rtl_set_CF(&t0); //设置CF位为0
   print_asm_template2(and);
 }
 /*CF和OF位都是0，目标操作数等于src和dest的异或*/
