@@ -1,8 +1,8 @@
 #include "cpu/exec.h"
 #include "monitor/monitor.h"
-//nop指令？？？
+// nop指令？？？
 make_EHelper(nop) {
-
+  //空指令,什么都不做。
   print_asm("nop");
 }
 /* 错误代码
@@ -16,8 +16,9 @@ make_EHelper(inv) {
   temp[1] = instr_fetch(pc, 4);
 
   uint8_t *p = (void *)temp;
-  printf("invalid opcode(PC = 0x%08x): %02x %02x %02x %02x %02x %02x %02x %02x ...\n\n",
-      cpu.pc, p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7]);
+  printf("invalid opcode(PC = 0x%08x): %02x %02x %02x %02x %02x %02x %02x %02x "
+         "...\n\n",
+         cpu.pc, p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7]);
 
   display_inv_msg(cpu.pc);
 
