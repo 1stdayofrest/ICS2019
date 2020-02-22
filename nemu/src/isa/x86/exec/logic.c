@@ -4,13 +4,12 @@
 
 make_EHelper(test) {
   //TODO
-  rtl_and(&t0, &id_dest->val, &id_src->val);
+  rtl_and(&t0, &id_dest->val, &id_src->val);//目的操作数与源操作数相与
 
-  rtl_update_ZFSF(&t0, id_dest->width);
-
-  rtl_li(&t0, 0);
+  rtl_li(&t1, 0);
   rtl_set_CF(&t0);
   rtl_set_OF(&t0);
+  rtl_update_ZFSF(&t0, id_dest->width);//更新符号位
 
   print_asm_template2(test);
 }
