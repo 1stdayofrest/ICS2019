@@ -1,7 +1,8 @@
 #include "cpu/exec.h"
 #include "monitor/monitor.h"
-
+//nop指令？？？
 make_EHelper(nop) {
+
   print_asm("nop");
 }
 /* 错误代码
