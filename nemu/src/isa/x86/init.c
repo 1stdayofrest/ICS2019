@@ -16,6 +16,10 @@ const long isa_default_img_size = sizeof(isa_default_img);
 static void restart() {
   /* Set the initial program counter. */
   cpu.pc = PC_START;
+  cpu.eflags.value = 0x2;
+//#ifdef DIFF_TEST
+//  init_qemu_reg();
+//#endif
 }
 void reg_test(void);
 void init_isa(void) {

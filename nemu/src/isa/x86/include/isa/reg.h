@@ -41,6 +41,20 @@ typedef struct {
       rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
     };
   };
+  union {
+    struct {
+      uint32_t CF : 1; // CF占一位
+      unsigned : 5;    //之后是5位空域
+      uint32_t ZF : 1; // ZF占一位
+      uint32_t SF : 1; // SF占一位
+      unsigned : 1;    // 1位空域
+      uint32_t IF : 1; // IF占一位
+      unsigned : 1;    // 1位空域
+      uint32_t OF : 1; // OF占一位
+      unsigned : 20;   // 20位空域
+    };
+    uint32_t value; //赋初值要用
+  } eflags;//eflags寄存器,需要设置eflags的初值
 
   vaddr_t pc;
 

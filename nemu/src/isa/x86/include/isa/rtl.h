@@ -78,22 +78,35 @@ static inline void rtl_is_add_carry(rtlreg_t *dest, const rtlreg_t *res,
   // dest <- is_carry(src1 + src2)
   TODO();
 }
-
+//对eflags寄存器的set，get操作，简单赋值操作？？？
 #define make_rtl_setget_eflags(f)                                              \
-  static inline void concat(rtl_set_, f)(const rtlreg_t *src) { TODO(); }      \
-  static inline void concat(rtl_get_, f)(rtlreg_t * dest) { TODO(); }
-
-make_rtl_setget_eflags(CF) make_rtl_setget_eflags(OF) make_rtl_setget_eflags(ZF)
-    make_rtl_setget_eflags(SF)
-
-        static inline void rtl_update_ZF(const rtlreg_t *result, int width) {
+  static inline void concat(rtl_set_, f)(const rtlreg_t *src) {                \
+  cpu.eflags.f = *src;                                                         \
+  }                                                                            \
+  static inline void concat(rtl_get_, f)(rtlreg_t * dest)  {                   \
+  *dest = cpu.eflags.f;                                                        \
+  }
+make_rtl_setget_eflags(CF)
+make_rtl_setget_eflags(OF)
+make_rtl_setget_eflags(ZF)
+make_rtl_setget_eflags(SF)
+//简单的判断之后就传到rtl_set_ZF函数里面设置给ZF相应的值
+static inline void rtl_update_ZF(const rtlreg_t *result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
-  TODO();
+  //TODO
+  if (*result == 0) {
+    t0 = 1;
+  } else{
+    t0 = 0;
+  }
+  rtl_set_ZF(&t0);
 }
 
 static inline void rtl_update_SF(const rtlreg_t *result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
-  TODO();
+  //TODO
+  t0 = result[width * 8 - 1];//找到符号位
+  rtl_set_SF(&t0);//设置符号位
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t *result, int width) {
