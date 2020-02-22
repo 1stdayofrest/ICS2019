@@ -46,7 +46,7 @@ typedef struct {
   uint32_t width;  //操作码宽度
   vaddr_t seq_pc;  // sequential pc
   bool is_jmp;     //是否是跳转操作
-  vaddr_t jmp_pc;  //
+  vaddr_t jmp_pc;  //要跳转到的pc
   Operand src, dest, src2;//操作数
   /* decinfo结构在nemu/src/cpu/cpu.c中定义,
    * 它用于记录一些全局译码信息供后续使用,
