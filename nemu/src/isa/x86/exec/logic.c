@@ -13,11 +13,12 @@ make_EHelper(and) {
 
   print_asm_template2(and);
 }
-
+/*CF和OF位都是0，目标操作数等于src和dest的异或*/
 make_EHelper(xor) {
   // TODO();
-  rtl_xor(&id_dest->val, &id_dest->val, &id_src->val);
-  operand_write(id_dest, &id_dest->val);
+  //dest的值和src的值异或之后赋给dest？
+  rtl_xor(&t0, &id_dest->val, &id_src->val);
+  operand_write(id_dest, &t0);
 
   rtl_li(&t0, 0);
   rtl_set_CF(&t0);
@@ -25,6 +26,7 @@ make_EHelper(xor) {
   // CF = OF = 0
 
   rtl_update_ZFSF(&id_dest->val, id_dest->width);
+  print_asm_template2(xor);
 }
 
 make_EHelper(or) {
