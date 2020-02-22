@@ -9,7 +9,7 @@
 union isa_gdb_regs {
   struct {
     uint32_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
-    uint32_t eflags,pc;
+    uint32_t pc, eflags;
     uint32_t cs, ss, ds, es, fs, gs;
   };
   struct {

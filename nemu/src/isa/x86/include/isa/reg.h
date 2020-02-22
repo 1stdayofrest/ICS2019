@@ -41,6 +41,7 @@ typedef struct {
       rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
     };
   };
+  vaddr_t pc;
   union {
     struct {
       uint32_t CF : 1; // CF占一位
@@ -54,10 +55,7 @@ typedef struct {
       unsigned : 20;   // 20位空域
     };
     uint32_t value; //赋初值要用
-  } eflags;//eflags寄存器,需要设置eflags的初值
-
-  vaddr_t pc;
-
+  } eflags;         // eflags寄存器,需要设置eflags的初值
 } CPU_state;
 
 static inline int check_reg_index(int index) {
