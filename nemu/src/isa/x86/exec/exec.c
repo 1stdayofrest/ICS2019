@@ -27,24 +27,34 @@ static make_EHelper(2byte_esc);
  * 在同一个指令组中的指令需要通过
  * ModR/M字节中的扩展opcode域来区分.*/
 /* 0x80, 0x81, 0x83 */
-make_group(gp1, EX(add), EX(or), EX(adc), EX(sbb), EX(and), EX(sub), EX(xor),
-           EX(cmp))
-    /* 0xc0, 0xc1, 0xd0, 0xd1, 0xd2, 0xd3 */
-    make_group(gp2, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
+make_group(gp1,
+           EX(add), EX(or), EMPTY, EX(sbb),
+           EX(and), EX(sub), EX(xor), EX(cmp))
 
-    /* 0xf6, 0xf7 */
-    make_group(gp3, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
+/* 0xc0, 0xc1, 0xd0, 0xd1, 0xd2, 0xd3 */
+make_group(gp2,
+           EX(rol), EMPTY, EMPTY, EMPTY,
+           EX(shl), EX(shr), EMPTY, EX(sar))
 
-    /* 0xfe */
-    make_group(gp4, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
+/* 0xf6, 0xf7 */
+make_group(gp3,
+           IDEX(test_I, test), EMPTY, EX(not), EX(neg),
+           EX(mul), EX(imul1), EX(div), EX(idiv))
 
-    /* 0xff */
+/* 0xfe */
+make_group(gp4,
+           EMPTY, EX(dec), EMPTY, EMPTY,
+           EMPTY, EMPTY, EMPTY, EMPTY)
+
+/* 0xff */
 make_group(gp5,
-           EX(inc), EX(dec), EX(call_rm), EX(call),
+           EX(inc), EX(dec), EX(call_rm), EMPTY,
            EX(jmp_rm), EMPTY, EX(push), EMPTY)
-    /* 0x0f 0x01*/
-    make_group(gp7, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
 
+/* 0x0f 0x01*/
+make_group(gp7,
+           EMPTY, EMPTY, EMPTY, EX(lidt),
+           EMPTY, EMPTY, EMPTY, EMPTY)
     /* TODO: Add more instructions!!! */
     /* 译码查找表,
      * 这一张表通过操作码opcode来索引,

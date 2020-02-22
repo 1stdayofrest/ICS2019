@@ -1,7 +1,14 @@
 #include "cpu/exec.h"
 #include "cc.h"
 
+make_EHelper(rol) {
+  while (id_src->val--) {
+    id_dest->val |= t0;
+  }
+  operand_write(id_dest, &id_dest->val);
 
+  print_asm_template2(rol);
+}
 make_EHelper(test) {
   //TODO
   rtl_and(&t0, &id_dest->val, &id_src->val);//目的操作数与源操作数相与
