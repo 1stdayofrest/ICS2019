@@ -1,7 +1,11 @@
 #include "rtl/rtl.h"
 
 /* Condition Code */
-
+/*在cc.c文件里面找到了rtl_setcc函数，从注释来看，
+ * 让我查询每个eflag来看看是不是满足条件代码。枚举类型不赋初值，
+ * 第一个默认为0，往后依次加一。
+ * 这就是讲义中说的哪个需要更新eflags的操作。
+ * 根据手册勘误来完成相关的操作！*/
 void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
   bool invert = subcode & 0x1;
   enum {
