@@ -13,7 +13,7 @@ make_EHelper(jcc) {
   uint32_t cc = decinfo.opcode & 0xf;
   rtl_setcc(&t0, cc);//问题很大兄弟
   rtl_li(&t1, 0);//条件转移指令
-  rtl_jrelop(RELOP_NE, &t0, &t1, decinfo.jmp_pc);
+  rtl_jrelop(RELOP_NE, &t0, &t1, decinfo.jmp_pc);//条件跳转
   //difftest_skip_ref();
   print_asm("j%s %x", get_cc_name(cc), decinfo.jmp_pc);
 
