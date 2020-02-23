@@ -117,8 +117,8 @@ static inline void rtl_update_SF(const rtlreg_t *result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
   // TODO
   rtl_msb(&t0, result, width);
-  rtlreg_t is_sign = t0 != 0;
-  rtl_set_SF(&is_sign);
+  //rtlreg_t is_sign = t0 != 0;
+  rtl_set_SF(&t0);
   //t0 = result[width * 8 - 1]; //找到符号位
   //rtl_set_SF(&t0);            //设置符号位
 }
