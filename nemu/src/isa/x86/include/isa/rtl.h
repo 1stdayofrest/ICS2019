@@ -107,13 +107,13 @@ static inline void rtl_update_ZF(const rtlreg_t *result, int width) {
     t0 = (*result & 0xffffffff) | 0;
   }*/
   //cpu.eflags.ZF = (t0 == 0) ? 1 : 0;
-  rtlreg_t is_zero;
-  switch (width) {
-  case 1: is_zero = (*result & 0xff) == 0;
-  case 2: is_zero = (*result & 0xffff) == 0;
-  default: is_zero = (*result) == 0;
+  //rtlreg_t is_zero;
+  switch (width) {//一脸懵逼
+  case 1: t0 = (*result & 0xff) == 0;
+  case 2: t0 = (*result & 0xffff) == 0;
+  default: t0 = (*result) == 0;
   }
-  rtl_set_ZF(&is_zero);
+  rtl_set_ZF(&t0);
   //rtl_set_ZF(&t0);
 }
 /* 此时我们就可以判断SF位没有写对，因为我们传入了一个负数，
