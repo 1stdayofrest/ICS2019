@@ -90,7 +90,13 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
   case CC_L: *dest = cpu.eflags.SF != cpu.eflags.OF ? 1 : 0; break;
   //case CC_LE: *dest = cpu.eflags.SF != cpu.eflags.OF || cpu.eflags.ZF ? 1 : 0; break;
   case CC_LE: //14 e
-    *dest = ((cpu.eflags.ZF) || (cpu.eflags.SF != cpu.eflags.OF));
+    //*dest = ((cpu.eflags.ZF) || (cpu.eflags.SF != cpu.eflags.OF));
+    rtl_get_ZF(&t0);
+    rtl_get_SF(&t1);
+    rtl_get_OF(&t2);
+    t3 = (t1 != t2 ? 1 : 0);
+    rtl_or(dest, &t0, &t3);
+    break;
     break;
   default: panic("should not reach here");
   case CC_P: panic("n86 does not have PF");
