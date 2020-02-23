@@ -82,7 +82,7 @@ static inline void rtl_is_add_carry(rtlreg_t *dest, const rtlreg_t *res,
 //对eflags寄存器的set，get操作，简单赋值操作？？？
 #define make_rtl_setget_eflags(f)                                              \
   static inline void concat(rtl_set_, f)(const rtlreg_t *src) {                \
-    cpu.eflags.f = *src | 0x0;                                                       \
+    cpu.eflags.f = *src & 0x1;                                                       \
   }                                                                            \
   static inline void concat(rtl_get_, f)(rtlreg_t * dest) {                    \
     *dest = cpu.eflags.f;                                                      \
