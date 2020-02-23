@@ -92,7 +92,7 @@ make_rtl_setget_eflags(OF)
 make_rtl_setget_eflags(ZF)
 make_rtl_setget_eflags(SF)
 //简单的判断之后就传到rtl_set_ZF函数里面设置给ZF相应的值
-
+//TODO：这一步很重要
 static inline void rtl_update_ZF(const rtlreg_t *result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
   // TODO
