@@ -56,7 +56,7 @@ void cpu_exec(uint64_t n) {
 
 #ifdef DEBUG
   if (g_nr_guest_instr < LOG_MAX) {
-    asm_print(ori_pc, seq_pc - ori_pc, n < MAX_INSTR_TO_PRINT);
+    asm_print(ori_pc, seq_pc - ori_pc, true);//n < MAX_INSTR_TO_PRINT
   }
   else if (g_nr_guest_instr == LOG_MAX) {
     log_write("\n[Warning] To restrict the size of log file, "
