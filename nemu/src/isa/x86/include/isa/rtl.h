@@ -82,30 +82,45 @@ static inline void rtl_is_add_carry(rtlreg_t *dest, const rtlreg_t *res,
 //对eflags寄存器的set，get操作，简单赋值操作？？？
 #define make_rtl_setget_eflags(f)                                              \
   static inline void concat(rtl_set_, f)(const rtlreg_t *src) {                \
-    cpu.eflags.f = *src;                                                       \
+    cpu.eflags.f = *src & 0x1;                                                       \
   }                                                                            \
   static inline void concat(rtl_get_, f)(rtlreg_t * dest) {                    \
     *dest = cpu.eflags.f;                                                      \
   }
-make_rtl_setget_eflags(CF) make_rtl_setget_eflags(OF) make_rtl_setget_eflags(ZF)
-    make_rtl_setget_eflags(SF)
-    //简单的判断之后就传到rtl_set_ZF函数里面设置给ZF相应的值
-    static inline void rtl_update_ZF(const rtlreg_t *result, int width) {
+make_rtl_setget_eflags(CF)
+make_rtl_setget_eflags(OF)
+make_rtl_setget_eflags(ZF)
+make_rtl_setget_eflags(SF)
+//简单的判断之后就传到rtl_set_ZF函数里面设置给ZF相应的值
+
+static inline void rtl_update_ZF(const rtlreg_t *result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
   // TODO
-  if (*result == 0) {
-    t0 = 1;
-  } else {
-    t0 = 0;
+  //int zf = 0;
+  if (width == 1) {
+    t0 = (*result & 0x000000ff) | 0;
   }
+  else if (width == 2) {
+    t0 = (*result & 0x0000ffff) | 0;
+  }
+  else if (width == 4) {
+    t0 = (*result & 0xffffffff) | 0;
+  }
+  //cpu.eflags.ZF = (t0 == 0) ? 1 : 0;
   rtl_set_ZF(&t0);
 }
-
+/* 此时我们就可以判断SF位没有写对，因为我们传入了一个负数，
+ * SF位应该是1，但是SF位没变。然后检查rtl_SF函数，
+ * 发现2.1写的这个函数有问题，取到的符号位是错的，
+ * 更改这个函数，通过右移相应位数来找到符号位。*/
 static inline void rtl_update_SF(const rtlreg_t *result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
   // TODO
-  t0 = result[width * 8 - 1]; //找到符号位
-  rtl_set_SF(&t0);            //设置符号位
+  rtl_msb(&t0, result, width);
+  rtlreg_t is_sign = t0 != 0;
+  rtl_set_SF(&is_sign);
+  //t0 = result[width * 8 - 1]; //找到符号位
+  //rtl_set_SF(&t0);            //设置符号位
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t *result, int width) {
