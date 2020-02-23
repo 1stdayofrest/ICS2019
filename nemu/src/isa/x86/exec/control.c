@@ -47,10 +47,12 @@ make_EHelper(ret_imm) {
 }
 
 make_EHelper(call_rm) {
-  TODO();
+  //TODO();
   /*rtl_push(&decinfo.seq_pc);
   decinfo.jmp_pc = id_dest->val;
   decinfo.is_jmp = 1;*/
+  rtl_push(pc);
+  rtl_jr(&id_dest->val);
 
   print_asm("call *%s", id_dest->str);
 }
