@@ -17,7 +17,6 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
 
   // TODO: Query EFLAGS to determine whether the condition code is satisfied.
   // dest <- ( cc is satisfied ? 1 : 0)
-/*
   switch (subcode & 0xe) {
   case CC_O://0
     rtl_get_OF(dest);
@@ -51,8 +50,7 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
     default: panic("should not reach here");
     case CC_P: panic("n86 does not have PF");
   }
-*/
-  switch (subcode & 0xe) {
+  /*switch (subcode & 0xe) {
   case CC_O:  //0
     *dest = cpu.eflags.OF;
     break;
@@ -80,7 +78,7 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
     break;
   default: panic("should not reach here");
   case CC_P: panic("n86 does not have PF");
-  }
+  }*/
   if (invert) {
     rtl_xori(dest, dest, 0x1);
   }
