@@ -64,19 +64,23 @@ static inline make_DopHelper(SI) {
    op->simm = ??? 有符号立即数和无符号立即数的区别
    */
   //读取符号操作数，和有符号的一样？？
-  /*if (op->width == 4) {
+  if (op->width == 4) {
     op->simm = instr_fetch(pc, op->width);
   } else if (op->width == 2) {//截断+符号扩展
-    op->simm = (int16_t)((uint16_t)instr_fetch(pc, op->width));
+    t0 = ((uint16_t)instr_fetch(pc, op->width));
+    rtl_sext(&t1,&t0,2);
+    op->simm = t1;
   } else {
-    op->simm = (int16_t)(int8_t)((uint8_t)instr_fetch(pc, op->width));
-  }*/
-  rtlreg_t imm = instr_fetch(pc, op->width);
+    t0 = ((uint16_t)instr_fetch(pc, op->width));
+    rtl_sext(&t1,&t0,1);
+    op->simm = t1;
+  }
+  /*rtlreg_t imm = instr_fetch(pc, op->width);
   rtl_msb(&t0, &imm, op->width);
   op->simm = imm;
   if (op->width == 1 && t0 == 1) {
     op->simm |= 0xffffff00;
-  }
+  }*/
   rtl_li(&op->val, op->simm);
 
   print_Dop(op->str, OP_STR_SIZE, "$0x%x", op->simm);
