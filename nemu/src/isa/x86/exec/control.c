@@ -11,10 +11,10 @@ make_EHelper(jmp) {
 make_EHelper(jcc) {
   // the target address is calculated at the decode stage
   uint32_t cc = decinfo.opcode & 0xf;
-  rtl_setcc(&t0, cc);
+  rtl_setcc(&t0, cc);//问题很大兄弟
   rtl_li(&t1, 0);
   rtl_jrelop(RELOP_NE, &t0, &t1, decinfo.jmp_pc);
-  difftest_skip_ref();
+  //difftest_skip_ref();
   print_asm("j%s %x", get_cc_name(cc), decinfo.jmp_pc);
 }
 
