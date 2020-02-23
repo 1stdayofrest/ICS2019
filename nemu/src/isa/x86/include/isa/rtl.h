@@ -97,7 +97,7 @@ static inline void rtl_update_ZF(const rtlreg_t *result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
   // TODO
   //int zf = 0;
-  if (width == 1) {
+  /*if (width == 1) {
     t0 = (*result & 0x000000ff) | 0;
   }
   else if (width == 2) {
@@ -105,9 +105,16 @@ static inline void rtl_update_ZF(const rtlreg_t *result, int width) {
   }
   else if (width == 4) {
     t0 = (*result & 0xffffffff) | 0;
-  }
+  }*/
   //cpu.eflags.ZF = (t0 == 0) ? 1 : 0;
-  rtl_set_ZF(&t0);
+  rtlreg_t is_zero;
+  switch (width) {
+  case 1: is_zero = (*result & 0xff) == 0;
+  case 2: is_zero = (*result & 0xffff) == 0;
+  default: is_zero = (*result) == 0;
+  }
+  rtl_set_ZF(&is_zero);
+  //rtl_set_ZF(&t0);
 }
 /* 此时我们就可以判断SF位没有写对，因为我们传入了一个负数，
  * SF位应该是1，但是SF位没变。然后检查rtl_SF函数，
