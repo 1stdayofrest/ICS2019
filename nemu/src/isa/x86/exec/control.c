@@ -14,7 +14,7 @@ make_EHelper(jcc) {
   rtl_setcc(&t0, cc);
   rtl_li(&t1, 0);
   rtl_jrelop(RELOP_NE, &t0, &t1, decinfo.jmp_pc);
-
+  difftest_skip_ref();
   print_asm("j%s %x", get_cc_name(cc), decinfo.jmp_pc);
 }
 
