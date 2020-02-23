@@ -1,5 +1,12 @@
 #include "rtl/rtl.h"
-
+/*CC_O: 将OF赋值给操作数
+  CC_B: 将CF赋值给操作数
+  CC_E: 获取ZF, 然后判断ZF是否为1，若是则dest为1，否则为0
+  CC_NE: 获取ZF, 然后判断ZF是否不等于0，若是则dest为1，否则为0
+  CC_BE: 将CF和ZF取或后结果赋值给dest
+  CC_S: 将SF赋值给操作数
+  CC_L: 判断SF和OF是否相等，将结果赋值给dest
+  CC_LE: 将ZF和SF是否不等于OF的结果取或，然后赋值给dest*/
 /* Condition Code */
 /*在cc.c文件里面找到了rtl_setcc函数，从注释来看，
  * 让我查询每个eflag来看看是不是满足条件代码。枚举类型不赋初值，
@@ -81,7 +88,7 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
   default: panic("should not reach here");
   case CC_P: panic("n86 does not have PF");
   }*/
-  switch (subcode & 0xe) {
+  /*switch (subcode & 0xe) {
   case CC_O: *dest = cpu.eflags.OF ? 1 : 0; break;
   case CC_B: *dest = cpu.eflags.CF ? 1 : 0; break;
   case CC_E: *dest = cpu.eflags.ZF ? 1 : 0; break;
@@ -90,12 +97,41 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
   case CC_L: *dest = cpu.eflags.SF != cpu.eflags.OF ? 1 : 0; break;
   //case CC_LE: *dest = cpu.eflags.SF != cpu.eflags.OF || cpu.eflags.ZF ? 1 : 0; break;
   case CC_LE: //14 e
-    //*dest = ((cpu.eflags.ZF) || (cpu.eflags.SF != cpu.eflags.OF));
+    //dest = ((cpu.eflags.ZF) || (cpu.eflags.SF != cpu.eflags.OF));
     rtl_get_ZF(&t0);
     rtl_get_SF(&t1);
     rtl_get_OF(&t2);
     //t3 = (t1 != t2 ? 1 : 0);
     rtl_li(dest, (t0 || (t1 != t2)));
+    break;
+  default: panic("should not reach here");
+  case CC_P: panic("n86 does not have PF");
+  }*/
+  switch (subcode & 0xe) {
+  case CC_O:  //0
+    *dest = cpu.eflags.OF;
+    break;
+  case CC_B:  //2
+    *dest = cpu.eflags.CF;
+    break;
+  case CC_E:  //4
+    //printf("i am here\n");
+    //printf("zf = %d\n", cpu.eflags.ZF);
+    *dest = cpu.eflags.ZF;
+    break;
+  case CC_BE: //6
+    //printf("switch = %x\n", subcode&0xe);
+    *dest = ((cpu.eflags.CF) || (cpu.eflags.ZF));
+    //printf("dest = %d\n", *dest);
+    break;
+  case CC_S:  //8
+    *dest = cpu.eflags.SF;
+    break;
+  case CC_L:  //12 c
+    *dest = (cpu.eflags.SF != cpu.eflags.OF);
+    break;
+  case CC_LE: //14 e
+    *dest = ((cpu.eflags.ZF) || (cpu.eflags.SF != cpu.eflags.OF));
     break;
   default: panic("should not reach here");
   case CC_P: panic("n86 does not have PF");
