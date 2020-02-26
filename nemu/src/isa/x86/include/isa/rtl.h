@@ -57,20 +57,20 @@ static inline void rtl_is_sub_overflow(rtlreg_t *dest, const rtlreg_t *res,
                                        const rtlreg_t *src1,
                                        const rtlreg_t *src2, int width) {
   // dest <- is_overflow(src1 - src2)
-  //TODO
+  // TODO
 }
 
 static inline void rtl_is_sub_carry(rtlreg_t *dest, const rtlreg_t *res,
                                     const rtlreg_t *src1) {
   // dest <- is_carry(src1 - src2)
-  //TODO
+  // TODO
 }
 
 static inline void rtl_is_add_overflow(rtlreg_t *dest, const rtlreg_t *res,
                                        const rtlreg_t *src1,
                                        const rtlreg_t *src2, int width) {
   // dest <- is_overflow(src1 + src2)
-  //TODO
+  // TODO
 }
 
 static inline void rtl_is_add_carry(rtlreg_t *dest, const rtlreg_t *res,
@@ -82,21 +82,19 @@ static inline void rtl_is_add_carry(rtlreg_t *dest, const rtlreg_t *res,
 //对eflags寄存器的set，get操作，简单赋值操作？？？
 #define make_rtl_setget_eflags(f)                                              \
   static inline void concat(rtl_set_, f)(const rtlreg_t *src) {                \
-    cpu.eflags.f = *src & 0x1;                                                       \
+    cpu.eflags.f = *src & 0x1;                                                 \
   }                                                                            \
   static inline void concat(rtl_get_, f)(rtlreg_t * dest) {                    \
     *dest = cpu.eflags.f;                                                      \
   }
-make_rtl_setget_eflags(CF)
-make_rtl_setget_eflags(OF)
-make_rtl_setget_eflags(ZF)
-make_rtl_setget_eflags(SF)
-//简单的判断之后就传到rtl_set_ZF函数里面设置给ZF相应的值
-//TODO：这一步很重要
-static inline void rtl_update_ZF(const rtlreg_t *result, int width) {
+make_rtl_setget_eflags(CF) make_rtl_setget_eflags(OF) make_rtl_setget_eflags(ZF)
+    make_rtl_setget_eflags(SF)
+    //简单的判断之后就传到rtl_set_ZF函数里面设置给ZF相应的值
+    // TODO：这一步很重要
+    static inline void rtl_update_ZF(const rtlreg_t *result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
   // TODO
-  //int zf = 0;
+  // int zf = 0;
   /*if (width == 1) {
     t0 = (*result & 0x000000ff) | 0;
   }
@@ -106,15 +104,18 @@ static inline void rtl_update_ZF(const rtlreg_t *result, int width) {
   else if (width == 4) {
     t0 = (*result & 0xffffffff) | 0;
   }*/
-  //cpu.eflags.ZF = (t0 == 0) ? 1 : 0;
-  //rtlreg_t is_zero;
-  switch (width) {//一脸懵逼
-  case 1: t0 = (*result & 0xff) == 0;
-  case 2: t0 = (*result & 0xffff) == 0;
-  default: t0 = (*result) == 0;
+  // cpu.eflags.ZF = (t0 == 0) ? 1 : 0;
+  // rtlreg_t is_zero;
+  switch (width) { //一脸懵逼
+  case 1:
+    t0 = (*result & 0xff) == 0;
+  case 2:
+    t0 = (*result & 0xffff) == 0;
+  default:
+    t0 = (*result) == 0;
   }
   rtl_set_ZF(&t0);
-  //rtl_set_ZF(&t0);
+  // rtl_set_ZF(&t0);
 }
 /* 此时我们就可以判断SF位没有写对，因为我们传入了一个负数，
  * SF位应该是1，但是SF位没变。然后检查rtl_SF函数，
@@ -123,14 +124,14 @@ static inline void rtl_update_ZF(const rtlreg_t *result, int width) {
 static inline void rtl_update_SF(const rtlreg_t *result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
   // TODO
-  //rtl_msb(&t0, result, width);
-  //rtlreg_t is_sign = t0 != 0;
-  //rtl_set_SF(&t0);//TODO:有问题
-  //t0 = result[width * 8 - 1]; //找到符号位
-  //rtl_set_SF(&t0);            //设置符号位
-  rtl_msb(&t0, result, width);
-  rtlreg_t is_sign = t0 ? 1 :0;
-  rtl_set_SF(&is_sign);
+  // rtl_msb(&t0, result, width);
+  // rtlreg_t is_sign = t0 != 0;
+  // rtl_set_SF(&t0);//TODO:有问题
+  // t0 = result[width * 8 - 1]; //找到符号位
+  // rtl_set_SF(&t0);            //设置符号位
+  rtl_msb(&t1, result, width);
+  //  rtlreg_t is_sign = t0 ? 1 :0;
+  rtl_set_SF(&t1);
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t *result, int width) {
