@@ -129,9 +129,9 @@ static inline void rtl_update_SF(const rtlreg_t *result, int width) {
   // rtl_set_SF(&t0);//TODO:有问题
   // t0 = result[width * 8 - 1]; //找到符号位
   // rtl_set_SF(&t0);            //设置符号位
-  rtl_msb(&t1, result, width);
+  rtl_msb(&t3, result, width);
   //  rtlreg_t is_sign = t0 ? 1 :0;
-  rtl_set_SF(&t1);
+  rtl_set_SF(&t3);
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t *result, int width) {
