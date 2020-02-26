@@ -87,11 +87,13 @@ static inline void rtl_is_add_carry(rtlreg_t *dest, const rtlreg_t *res,
   static inline void concat(rtl_get_, f)(rtlreg_t * dest) {                    \
     *dest = cpu.eflags.f;                                                      \
   }
-make_rtl_setget_eflags(CF) make_rtl_setget_eflags(OF) make_rtl_setget_eflags(ZF)
-    make_rtl_setget_eflags(SF)
-    //简单的判断之后就传到rtl_set_ZF函数里面设置给ZF相应的值
-    // TODO：这一步很重要
-    static inline void rtl_update_ZF(const rtlreg_t *result, int width) {
+make_rtl_setget_eflags(CF)
+make_rtl_setget_eflags(OF)
+make_rtl_setget_eflags(ZF)
+make_rtl_setget_eflags(SF)
+//简单的判断之后就传到rtl_set_ZF函数里面设置给ZF相应的值
+// TODO：这一步很重要
+static inline void rtl_update_ZF(const rtlreg_t *result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
   // TODO
   // int zf = 0;
@@ -129,9 +131,9 @@ static inline void rtl_update_SF(const rtlreg_t *result, int width) {
   // rtl_set_SF(&t0);//TODO:有问题
   // t0 = result[width * 8 - 1]; //找到符号位
   // rtl_set_SF(&t0);            //设置符号位
-  rtl_msb(&t3, result, width);
+  rtl_msb(&t0, result, width);
   //  rtlreg_t is_sign = t0 ? 1 :0;
-  rtl_set_SF(&t3);
+  rtl_set_SF(&t0);
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t *result, int width) {
