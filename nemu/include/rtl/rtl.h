@@ -5,9 +5,10 @@
 #include "rtl/c_op.h"
 #include "rtl/relop.h"
 #include "rtl/rtl-wrapper.h"
+#include <cpu/decode.h>
 
 extern rtlreg_t s0, s1, t0, t1, t2, t3, ir;
-
+DecodeInfo decinfo;
 void decinfo_set_jmp(bool is_jmp);
 bool interpret_relop(uint32_t relop, const rtlreg_t src1, const rtlreg_t src2);
 
@@ -143,7 +144,7 @@ static inline void interpret_rtl_j(vaddr_t target) {
 }
 
 static inline void interpret_rtl_jr(rtlreg_t *target) {
-  cpu.pc = *target;
+  decinfo.jmp_pc = *target;
   decinfo_set_jmp(true);
 }
 
