@@ -126,10 +126,10 @@ void rtl_setcc(rtlreg_t *dest, uint8_t subcode) {
   case CC_B: // 2
     *dest = cpu.eflags.CF;
     break;
-  case CC_E: // 4
+  case CC_E: // 4 获取ZF, 然后判断ZF是否为1，若是则dest为1，否则为0
     // printf("i am here\n");
     // printf("zf = %d\n", cpu.eflags.ZF);
-    *dest = cpu.eflags.ZF;
+    *dest = cpu.eflags.ZF ? 1 : 0;
     break;
   case CC_BE: // 6
     // printf("switch = %x\n", subcode&0xe);
