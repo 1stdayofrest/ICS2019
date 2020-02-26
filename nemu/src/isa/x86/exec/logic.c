@@ -12,11 +12,11 @@ make_EHelper(rol) {
 make_EHelper(test) {//测试（两操作数作与运算,仅修改标志位，不回送结果）
   // TODO
   rtl_and(&t0, &id_dest->val, &id_src->val); //目的操作数与源操作数相与
+  rtl_update_ZFSF(&t0, id_dest->width); //更新符号位
 
   rtl_li(&t1, 0);
   rtl_set_CF(&t0);
   rtl_set_OF(&t0);
-  rtl_update_ZFSF(&t0, id_dest->width); //更新符号位
 
   print_asm_template2(test);
 }
