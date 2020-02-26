@@ -130,8 +130,8 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
   case CC_L:  //12 c
     *dest = (cpu.eflags.SF != cpu.eflags.OF);
     break;
-  case CC_LE: //14 e
-    *dest = ((cpu.eflags.ZF) || (cpu.eflags.SF != cpu.eflags.OF));
+  case CC_LE: //14 e 将ZF和SF是否不等于OF的结果取或，然后赋值给dest
+    *dest = ((cpu.eflags.ZF != cpu.eflags.OF) || (cpu.eflags.SF != cpu.eflags.OF));
     break;
   default: panic("should not reach here");
   case CC_P: panic("n86 does not have PF");
