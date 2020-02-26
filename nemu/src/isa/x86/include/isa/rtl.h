@@ -123,9 +123,12 @@ static inline void rtl_update_ZF(const rtlreg_t *result, int width) {
 static inline void rtl_update_SF(const rtlreg_t *result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
   // TODO
-  rtl_msb(&t0, result, width);
+  //rtl_msb(&t0, result, width);
   //rtlreg_t is_sign = t0 != 0;
-  rtl_set_SF(&t0);//TODO:有问题
+  //rtl_set_SF(&t0);//TODO:有问题
+  int sf = 0;
+  sf = (*result >> (width * 8 - 1)) & 0x1;
+  cpu.eflags.SF = sf;
   //t0 = result[width * 8 - 1]; //找到符号位
   //rtl_set_SF(&t0);            //设置符号位
 }

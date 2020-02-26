@@ -9,7 +9,7 @@ make_EHelper(rol) {
 
   print_asm_template2(rol);
 }
-make_EHelper(test) {
+make_EHelper(test) {//测试（两操作数作与运算,仅修改标志位，不回送结果）
   // TODO
   rtl_and(&t0, &id_dest->val, &id_src->val); //目的操作数与源操作数相与
 
