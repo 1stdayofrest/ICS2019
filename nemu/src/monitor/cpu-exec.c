@@ -47,6 +47,7 @@ void cpu_exec(uint64_t n) {
      * Execute one instruction, including instruction fetch,
      * instruction decode, and the actual execution.
      * __attribute__((unused)) 告诉编译器忽略未使用警告
+     * 执行时，怎么调用系统api？？？string 自己写库
      * */
     __attribute__((unused)) vaddr_t seq_pc = exec_once();
 
